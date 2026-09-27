@@ -1,0 +1,8 @@
+# Held back from publication until they are more user-friendly (kept locally)
+consumeredge/
+advan-atlas/
+store-dynamics/
+# Local review copies for Claude artifacts
+_bundle/
+**/artifact.html
+build_artifacts.py
