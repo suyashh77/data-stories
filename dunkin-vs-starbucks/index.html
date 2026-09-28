@@ -18,7 +18,7 @@
   <h1>Dunkin' Peaks at 9 A.M. Starbucks Peaks at Noon. What Does That Say About Their Customers?</h1>
   <p class="dek">Phone and card data show Dunkin' as a quick weekday morning stop and Starbucks as a busier, later, more weekend-heavy one. A payment app complicates the comparison.</p>
   <div class="byline">Data analysis · September 2026 · Sources: Advan, SafeGraph, ConsumerEdge, Consumer Profiles</div>
-  <div class="stack">Analysis: Python, pandas, DuckDB · Visualization: D3.js · Methods: hourly/weekday pattern comparison, payment-channel reconciliation (card vs. app reload)</div>
+  <div class="stack">Analysis: Python, pandas, DuckDB · Visualization: D3.js · Methods: hourly/weekday pattern comparison, payment-channel reconciliation (card vs. app reload), event study of rival openings with placebo tests</div>
 </header>
 
 <div class="hook stat-row">
@@ -171,6 +171,17 @@
   <div class="src">Source: SafeGraph Spend Patterns cross-shopping lists (card panel). Lists are truncated to each store's top brands, so shares are lower bounds.</div>
 </figure>
 
+<h2>When a rival opens next door</h2>
+
+<p>When a new Starbucks opened within a kilometre of a Dunkin', Dunkin's visits didn't measurably change over the next year, across 224 openings. Starbucks shrugged off new Dunkin' and Dutch Bros stores too. The rival it did notice was 7 Brew, the drive-thru chain: about 3% fewer visits nearby, though part of that dip may have started earlier.</p>
+
+<figure>
+  <h3>Dunkin' didn't notice Starbucks, and Starbucks noticed only 7 Brew</h3>
+  <p class="read">Change in the existing store's visits in the 12 months after a rival opened within 1 km, against the same chain's stores 20 to 40 km away. Gray: the range when each opening is moved to a random fake location.</p>
+  <div class="chart" id="c-rivals"></div>
+  <div class="src">Source: Advan store visits, January 2023 to July 2026; openings are stores seen for the first time. This is an association, not proof: chains choose where to open. Dunkin' near Starbucks: only 33 openings, and Starbucks traffic was already rising beforehand. 7 Brew: moving openings a year earlier still shows −1.6%.</div>
+</figure>
+
 <h2>Who goes</h2>
 
 <p>The customer divide is smaller than the difference in schedules. The two chains' spending profiles move together, with a correlation of 0.89 across 28 demographic groups in every year since 2022. Households earning more than $150,000 account for 33% of Starbucks' tracked spending and 29% of Dunkin's. Starbucks takes a little more from people under 35 (32% against 30%), and Dunkin' more from people over 55 (25% against 22%). These are shares of spending, not counts of customers.</p>
@@ -208,6 +219,7 @@
   <h2>How this analysis was done</h2>
   <p><b>Visits, timing, visit length, store counts and phones</b> are from Advan Weekly Patterns, phone-location visit estimates obtained through Dewey, using only data from the 2023 methodology era, through July 2026. The last 12 months are August 2025 to July 2026. Hourly shares come from one sampled week per month, and a visit counts in every hour it overlaps. Same-state comparisons use the 42 states with at least five stores of each chain. Neighborhood make-up joins Advan visitors' home block groups to Consumer Profiles estimates for block groups with at least 50 people.</p>
   <p><b>Store-level card purchases</b>, purchase frequency, average transaction and cross-shopping are from SafeGraph Spend Patterns (via Dewey), October 2024 to September 2025. Months after September 2025 are excluded because the panel changes in October 2025. <b>Annual purchases, spending shares, seasons and demographics</b> are from ConsumerEdge's brand and demographic card panel (via Dewey), May 2021 to August 2026. Starbucks café purchases (STARBUCKS (MERCHANT)) and card and app reloads (STARBUCKS CARD) are tracked separately. Per-shopper figures use café purchases only; spending shares, seasons and demographics count both.</p>
+  <p><b>Rival openings</b> use a stacked event study on Advan monthly store visits, January 2023 to July 2026. Each opening is compared with the same incumbent chain's stores 20 to 40 km away over the same months, and each store with its own year before. Relocations, and openings where the incumbent also opened nearby, are dropped. Intervals come from 1,000 bootstrap draws over openings. Three checks: flat trends before the opening, 100 fake locations, and fake dates a year earlier. Pairs need at least 30 openings.</p>
   <p>The panels are samples, so levels are estimates; the comparisons between the chains are the finding. No source shares a person, card or phone with another. Card purchases count charges on bank cards, so purchases paid from a preloaded Starbucks balance are not captured as separate transactions. The analysis shows patterns, not causes.</p>
 </section>
 </article>
@@ -717,6 +729,38 @@ try {
 })();
 } catch (e) { console.error(e) }
 
+/* rival-opening effects: dot + 95% CI over the fake-location placebo band */
+function effectRows(id, rows, opt = {}){
+  const rowH = 34, f = frame(id, rows.length * rowH + 40, {t: 8, r: 170, b: 32, l: opt.left || 250});
+  const x = d3.scaleLinear().domain(opt.domain || [-6, 8]).range([0, f.iw]);
+  const y = d3.scaleBand().domain(rows.map(d => d.label)).range([0, f.ih]).padding(0.28);
+  f.g.append("g").attr("class", "grid").attr("transform", `translate(0,${f.ih})`).call(d3.axisBottom(x).ticks(7).tickSize(-f.ih).tickFormat(""));
+  f.g.append("g").attr("class", "axis").attr("transform", `translate(0,${f.ih})`).call(d3.axisBottom(x).ticks(7).tickFormat(v => (v > 0 ? "+" : "") + v + "%"));
+  const ya = f.g.append("g").attr("class", "axis").call(d3.axisLeft(y).tickSize(0).tickPadding(10));
+  ya.select(".domain").remove();
+  for (const d of rows) {
+    const cy = y(d.label) + y.bandwidth() / 2, col = d.col || "var(--ink)";
+    f.g.append("rect").attr("x", x(d.band[0])).attr("width", x(d.band[1]) - x(d.band[0])).attr("y", y(d.label)).attr("height", y.bandwidth()).attr("fill", "var(--ctx)").attr("opacity", 0.35).attr("rx", 3);
+    f.g.append("line").attr("x1", x(d.lo)).attr("x2", x(d.hi)).attr("y1", cy).attr("y2", cy).attr("stroke", col).attr("stroke-width", 2).attr("stroke-dasharray", d.weak ? "3 3" : null);
+    f.g.append("circle").attr("cx", x(d.v)).attr("cy", cy).attr("r", 6).attr("fill", d.weak ? "var(--surface)" : col).attr("stroke", col).attr("stroke-width", 2);
+    f.g.append("text").attr("class", "lab").attr("x", f.iw + 12).attr("y", cy).attr("dy", "0.35em").text((d.v > 0 ? "+" : "") + d.v.toFixed(1) + "%");
+    f.g.append("text").attr("class", "lab muted").attr("x", f.iw + 60).attr("y", cy).attr("dy", "0.35em").text(d.n + " openings");
+    f.g.append("rect").attr("class", "hit").attr("x", -f.m.l).attr("y", y(d.label)).attr("width", f.iw + f.m.l + f.m.r).attr("height", y.bandwidth())
+      .on("mousemove", (e) => showTip(f, e, `<b>${d.label}</b><br>${(d.v > 0 ? "+" : "") + d.v.toFixed(1)}% [${d.lo.toFixed(1)}, ${d.hi.toFixed(1)}] · ${d.n} openings<br>Fake-location range ${d.band[0].toFixed(1)} to ${d.band[1].toFixed(1)}%${d.why ? "<br>" + d.why : ""}`))
+      .on("mouseleave", () => hideTip(f));
+  }
+  f.g.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", f.ih).attr("stroke", "var(--muted)");
+  d3.select("#" + id).append("div").attr("class", "legend").html('<span><span class="sw" style="background:var(--ink);border-radius:50%"></span>Estimate, line = 95% interval</span><span><span class="sw" style="background:var(--ctx);opacity:.5"></span>Range from 100 fake locations</span><span><span class="sw" style="border:2px solid var(--ink);border-radius:50%;box-sizing:border-box"></span>Hollow: fails a check</span>');
+}
+
+/* rival openings */
+try {
+  effectRows("c-rivals", [
+    {label: "Starbucks opens near a Dunkin'", v: -0.44, lo: -1.38, hi: 0.51, band: [-0.53, 0.52], n: 224, col: "var(--a)"},
+    {label: "Dunkin' opens near a Starbucks", v: 3.83, lo: 1.07, hi: 6.93, band: [-2.79, 3.55], n: 33, col: "var(--b)", weak: true, why: "Few openings; Starbucks traffic was already rising"},
+    {label: "Dutch Bros opens near a Starbucks", v: 0.01, lo: -1.72, hi: 2.47, band: [-1.14, 0.82], n: 130, col: "var(--b)"},
+    {label: "7 Brew opens near a Starbucks", v: -3.13, lo: -4.74, hi: -1.68, band: [-0.75, 1.72], n: 168, col: "var(--b)", weak: true, why: "Fake dates a year earlier show −1.6%"}]);
+} catch (e) { console.error(e) }
 </script>
 <footer class="site-foot">By <a href="https://suyashh77.github.io/suyashsapre_portfolio/">Suyash Sapre</a> · Data: ConsumerEdge, SafeGraph, Advan and Consumer Profiles, licensed via Dewey. Only aggregates are published: no store, card, phone or person identifiers. Panels are samples, so read levels as estimates and the gaps between chains as the finding.</footer>
 </body>

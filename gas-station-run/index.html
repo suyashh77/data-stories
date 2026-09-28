@@ -18,7 +18,7 @@
   <h1>The Gas-Station Run Keeps Its Own Clock</h1>
   <p class="dek">A model saw only what sold, never the clock. It still split the day into three runs: morning coffee, a long daytime stretch and late night. And nearly a third of baskets are fuel and nothing else.</p>
   <div class="byline">Data analysis · September 2026 · Source: PDI convenience-store transactions, August 2025 to August 2026 (a sample of 168 of 673 files)</div>
-  <div class="stack">Analysis: Python, pandas, DuckDB, scikit-learn · Visualization: D3.js · Methods: k-means clustering of hourly sales mixes with stability checks, basket shares, pair lift (market-basket analysis) with bootstrap intervals and a timing adjustment</div>
+  <div class="stack">Analysis: Python, pandas, DuckDB, scikit-learn · Visualization: D3.js · Methods: k-means clustering of hourly sales mixes with stability checks, basket shares, pair lift (market-basket analysis) with bootstrap intervals and a timing adjustment, event study of rival openings with placebo tests</div>
 </header>
 
 <div class="hook stat-row">
@@ -122,11 +122,23 @@
   <div class="src">Source: PDI category co-purchase (<code>copurchase_month</code>) and hourly sales (<code>cat_hour_month</code>), August 2025 to August 2026. Timing-only lift assumes the two categories are bought independently within each month × hour, since there are no pair counts by hour. 95% bootstrap intervals are within ±5% of each value.</div>
 </figure>
 
+<h2>When a Sheetz or Wawa moves in</h2>
+
+<p>When a Sheetz or Wawa opened, other gas stations and convenience stores within a kilometre lost about 2% of their visits over the next year. The loss fades with distance. 7-Elevens a few kilometres from a new Wawa didn't measurably change.</p>
+
+<figure>
+  <h3>A new Sheetz or Wawa costs the station next door about 2%</h3>
+  <p class="read">Change in nearby stores' visits in the 12 months after the opening, by distance, against the same kind of store 20 to 40 km away. Gray: the range when each opening is moved to a random fake location.</p>
+  <div class="chart" id="c-rivals"></div>
+  <div class="src">Source: Advan store visits (not PDI), January 2023 to July 2026; openings are stores seen for the first time. This is an association, not proof: chains choose where to open. Wawa near 7-Eleven within 1 km has too few openings to show.</div>
+</figure>
+
 <section class="method">
   <h2>How this analysis was done</h2>
   <p><b>Data.</b> PDI convenience-store line items, August 2025 to August 2026, from 168 of 673 files. Baskets are rebuilt within each file. The stores are participating independents, not a random sample. There are no exact dates, so holidays can't be separated. Time zones are unverified, though the 7 a.m. coffee peak suggests local time. About a quarter of items are unclassified.</p>
   <p><b>Time slots.</b> 2,184 month × weekday × hour slots, each described by its share of item lines across 31 categories, then scaled. K-means was tried for 2 to 9 groups, and 3 scored best (silhouette 0.343, against 0.338 for 2). Five 80% subsamples agreed at 0.99 (adjusted Rand index), and the first and second halves of the year at 0.92. Slots count equally regardless of volume. The late-night group is partly defined by unclassified items.</p>
   <p><b>Baskets and pairs.</b> Plain shares of all 980 million basket records, not clusters. Lift is pooled over 13 months; monthly ranges are the lowest and highest monthly lift. Store-level and category clusters failed the project's own quality checks and are left out. These are patterns, not causes.</p>
+  <p><b>Rival openings.</b> A stacked event study on Advan monthly store visits, January 2023 to July 2026. Each opening is compared with the same kind of store 20 to 40 km away over the same months, and each store with its own year before. Intervals come from 1,000 bootstrap draws over openings. Checks: flat trends before the opening, 100 fake locations, and fake dates a year earlier. The Sheetz 1–3 km estimate fails the fake-date check. Stores unrelated to fuel (AutoZone) near the same openings also dipped about 2.7% at 3 to 5 km, so only the close-in effect is reported as a finding.</p>
   <p><b>Pairs and the clock.</b> The second pair chart counts only baskets with something besides fuel (678 million), because fuel-only baskets inflate every lift by the same factor. Pairs need at least 98,000 shared baskets and 500 in every month, a floor fixed before ranking. Intervals are the wider of two bootstraps (over months and over files). Timing-only lift treats two categories as independent within each month × hour slot. A category network was also tested; the version planned in advance did not beat shuffled networks, so it is left out.</p>
 </section>
 </article>
@@ -349,6 +361,42 @@ try {
   f.g.append("text").attr("class", "reflab").attr("x", x(1) + 4).attr("y", -2).text("Chance");
   legend("c-clock", [["Actual lift", "var(--ink)"], ["Lift from selling at the same hours alone", "var(--ctx-strong)"], ["Oddest cross-category pair", "var(--g)"]]);
 } catch (e) { fail("c-clock", e); }
+/* rival-opening effects: dot + 95% CI over the fake-location placebo band */
+function effectRows(id, rows, opt = {}){
+  const rowH = 34, f = frame(id, rows.length * rowH + 40, {t: 8, r: 170, b: 32, l: opt.left || 250});
+  const x = d3.scaleLinear().domain(opt.domain || [-6, 8]).range([0, f.iw]);
+  const y = d3.scaleBand().domain(rows.map(d => d.label)).range([0, f.ih]).padding(0.28);
+  f.g.append("g").attr("class", "grid").attr("transform", `translate(0,${f.ih})`).call(d3.axisBottom(x).ticks(7).tickSize(-f.ih).tickFormat(""));
+  f.g.append("g").attr("class", "axis").attr("transform", `translate(0,${f.ih})`).call(d3.axisBottom(x).ticks(7).tickFormat(v => (v > 0 ? "+" : "") + v + "%"));
+  const ya = f.g.append("g").attr("class", "axis").call(d3.axisLeft(y).tickSize(0).tickPadding(10));
+  ya.select(".domain").remove();
+  for (const d of rows) {
+    const cy = y(d.label) + y.bandwidth() / 2, col = d.col || "var(--ink)";
+    f.g.append("rect").attr("x", x(d.band[0])).attr("width", x(d.band[1]) - x(d.band[0])).attr("y", y(d.label)).attr("height", y.bandwidth()).attr("fill", "var(--ctx)").attr("opacity", 0.35).attr("rx", 3);
+    f.g.append("line").attr("x1", x(d.lo)).attr("x2", x(d.hi)).attr("y1", cy).attr("y2", cy).attr("stroke", col).attr("stroke-width", 2).attr("stroke-dasharray", d.weak ? "3 3" : null);
+    f.g.append("circle").attr("cx", x(d.v)).attr("cy", cy).attr("r", 6).attr("fill", d.weak ? "var(--surface)" : col).attr("stroke", col).attr("stroke-width", 2);
+    f.g.append("text").attr("class", "lab").attr("x", f.iw + 12).attr("y", cy).attr("dy", "0.35em").text((d.v > 0 ? "+" : "") + d.v.toFixed(1) + "%");
+    f.g.append("text").attr("class", "lab muted").attr("x", f.iw + 60).attr("y", cy).attr("dy", "0.35em").text(d.n + " openings");
+    f.g.append("rect").attr("class", "hit").attr("x", -f.m.l).attr("y", y(d.label)).attr("width", f.iw + f.m.l + f.m.r).attr("height", y.bandwidth())
+      .on("mousemove", (e) => showTip(f, e, `<b>${d.label}</b><br>${(d.v > 0 ? "+" : "") + d.v.toFixed(1)}% [${d.lo.toFixed(1)}, ${d.hi.toFixed(1)}] · ${d.n} openings<br>Fake-location range ${d.band[0].toFixed(1)} to ${d.band[1].toFixed(1)}%${d.why ? "<br>" + d.why : ""}`))
+      .on("mouseleave", () => hideTip(f));
+  }
+  f.g.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", f.ih).attr("stroke", "var(--muted)");
+  d3.select("#" + id).append("div").attr("class", "legend").html('<span><span class="sw" style="background:var(--ink);border-radius:50%"></span>Estimate, line = 95% interval</span><span><span class="sw" style="background:var(--ctx);opacity:.5"></span>Range from 100 fake locations</span><span><span class="sw" style="border:2px solid var(--ink);border-radius:50%;box-sizing:border-box"></span>Hollow: fails a check</span>');
+}
+
+/* rival openings */
+try {
+  effectRows("c-rivals", [
+    {label: "Sheetz → other stations · 0–1 km", v: -2.39, lo: -3.42, hi: -1.38, band: [-0.64, 1.65], n: 58},
+    {label: "Sheetz → other stations · 1–3 km", v: -1.10, lo: -1.66, hi: -0.56, band: [-0.64, 1.10], n: 70, weak: true, why: "Fails the fake-date check"},
+    {label: "Sheetz → other stations · 3–5 km", v: -0.54, lo: -1.48, hi: 0.37, band: [-0.52, 2.29], n: 71},
+    {label: "Wawa → other stations · 0–1 km", v: -2.11, lo: -3.70, hi: -0.53, band: [-0.90, 0.71], n: 122},
+    {label: "Wawa → other stations · 1–3 km", v: -1.18, lo: -2.72, hi: -0.00, band: [-1.11, 0.47], n: 143},
+    {label: "Wawa → other stations · 3–5 km", v: -0.11, lo: -0.66, hi: 0.48, band: [-0.61, 0.61], n: 152},
+    {label: "Wawa → 7-Eleven · 1–3 km", v: -0.14, lo: -0.91, hi: 0.64, band: [-1.29, 1.08], n: 54, col: "var(--ctx-strong)"},
+    {label: "Wawa → 7-Eleven · 3–5 km", v: 0.36, lo: -1.11, hi: 1.84, band: [-1.08, 0.6], n: 65, col: "var(--ctx-strong)"}], {domain: [-5, 3]});
+} catch (e) { fail("c-rivals", e); }
 </script>
 <footer class="site-foot">By <a href="https://suyashh77.github.io/suyashsapre_portfolio/">Suyash Sapre</a> · Data: ConsumerEdge, SafeGraph, Advan and Consumer Profiles, licensed via Dewey. Only aggregates are published: no store, card, phone or person identifiers. Panels are samples, so read levels as estimates and the gaps between chains as the finding.</footer>
 </body>
