@@ -149,6 +149,13 @@ select:hover,input:hover{border-color:var(--ctx-strong)}
 .stat .label{font:600 11px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .stat .value{font:600 26px/1.15 var(--mono);font-variant-numeric:tabular-nums;margin-top:6px}
 .stat .sub{font:12px var(--body);color:var(--faint);margin-top:2px}
+
+/* Hook stats: the story's strongest numbers, shown before any prose so the finding lands in the first screen. */
+.hook{max-width:900px;margin:20px auto 6px}
+.hook .stat{background:var(--sunk)}
+.hook .value{font-size:clamp(24px,3.2vw,34px)}
+.hook a.stat{display:block;text-decoration:none;color:inherit;transition:border-color .15s}
+.hook a.stat:hover{border-color:var(--ink)}
 .table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px}
 table{border-collapse:collapse;width:100%;font:13px var(--body)}
 th{text-align:left;font:600 11px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--sunk);position:sticky;top:0}
