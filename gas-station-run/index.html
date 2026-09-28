@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Gas-Station Run</title>
-<meta name="description" content="A clustering study of convenience-store receipts. Sorted only by what sold, the day splits into a morning coffee run, a long daytime run and a late-night one, and nearly a third of baskets are fuel alone.">
+<meta name="description" content="A clustering study of convenience-store receipts. Sorted only by what sold, the day splits into three runs, and nearly a third of baskets are fuel alone.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
 <link rel="stylesheet" href="../assets/site.css">
@@ -16,7 +16,7 @@
 <header class="top">
   <div class="eyebrow">What America Is Buying · Convenience Stores</div>
   <h1>The Gas-Station Run Keeps Its Own Clock</h1>
-  <p class="dek">A model sorted convenience-store sales by what was in the till, never by the time. The day still split three ways: a morning coffee-and-energy-drink run, a long daytime and evening run, and a late-night one. And nearly a third of baskets are fuel and nothing else.</p>
+  <p class="dek">A model saw only what sold, never the clock. It still split the day into three runs: morning coffee, a long daytime stretch and late night. And nearly a third of baskets are fuel and nothing else.</p>
   <div class="byline">Data analysis · September 2026 · Source: PDI convenience-store transactions, August 2025 to August 2026 (a sample of 168 of 673 files)</div>
   <div class="stack">Analysis: Python, pandas, DuckDB, scikit-learn · Visualization: D3.js · Methods: k-means clustering of hourly sales mixes with stability checks, basket shares, pair lift (market-basket analysis)</div>
 </header>
@@ -27,44 +27,38 @@
   <div class="stat"><div class="label">Coffee with sweet baked goods</div><div class="value">3.8×</div><div class="sub">as often as chance would predict</div></div>
 </div>
 
-<div class="callout"><b>For the business:</b> The store already runs three shifts of demand. Set the morning up for coffee, energy drinks, hot food and pastries. Give the long middle of the day to fuel, lottery and beer. And treat the pump as the biggest untapped aisle: only about 1 in 7 baskets with fuel in them holds anything else.</div>
+<div class="callout"><b>For the business:</b> Stock the morning for coffee, energy drinks and pastries, and the day for lottery, fuel and beer. The pump is the biggest untapped aisle: only 1 in 7 fuel baskets holds anything else.</div>
 
 <article>
-<p>Does a convenience store sell the same things all day? The quick answer is no, and everyone knows coffee sells in the morning. The better question is how many distinct selling periods a store really has, and where the lines fall. We asked a model to find out without telling it what time it was.</p>
+<p>Everyone knows coffee sells in the morning. The real question is how many selling periods a store has, and where one ends and the next begins. We asked a model without telling it the time.</p>
 
-<p>The data are receipts from participating independent convenience stores, most of them selling fuel, from PDI, a point-of-sale company. This analysis uses a sample of 168 of the 673 monthly files, about 980 million basket records from August 2025 to August 2026. It is not a picture of all Americans, and the groups below are groups of hours and baskets, not of people.</p>
+<p>The data: about 980 million receipts from independent convenience stores, via PDI (August 2025 to August 2026, 168 of 673 files). The groups are groups of hours and baskets, not people.</p>
 
 <h2>The day sorts itself</h2>
 
-<p>We cut the year into 2,184 one-hour slots: 13 months, times 7 days of the week, times 24 hours. For each slot we worked out what share of the items sold fell into each of 31 product categories, such as coffee, beer or lottery. The model got those shares and nothing else. It never saw the hour, the day or the month. It was asked to put slots with similar mixes into groups, and three groups fit best.</p>
-
-<p>Then we read the clock back. The three groups line up in time order. A morning mix runs from about 3 a.m. to 9 a.m. A daytime and evening mix runs from about 10 a.m. to 8 p.m. A late-night mix runs from 9 p.m. into the small hours. For 153 of the 168 weekday-hour combinations, every one of the 13 months landed in the same group.</p>
+<p>We cut the year into 2,184 hour slots and gave a model only each slot's mix across 31 product categories. It found three groups. Read back against the clock, they fall in order: morning (about 3 to 9 a.m.), day and evening (10 a.m. to 8 p.m.), and late night. For 153 of the 168 weekday-hours, all 13 months agreed.</p>
 
 <figure>
   <h3>Grouped only by what sold, the hours fall back into clock order</h3>
-  <p class="read">Each cell is one day of the week at one hour. Colour shows which of the three sales mixes that hour was put in. Paler cells are ones where the 13 months did not all agree.</p>
+  <p class="read">Each cell is one weekday-hour, coloured by its sales mix. Pale cells: the 13 months didn't all agree.</p>
   <div class="chart" id="c-heat"></div>
   <div class="src">Source: PDI, <code>time_slots</code> clustering (k-means, 3 groups) from <code>docs/stories/segments/retail/time_slots.json</code>; per-slot assignments reproduced from the same code and seed.</div>
 </figure>
 
-<p>The edges move with the week. Monday to Thursday, the morning mix starts at 3 a.m. On Friday and Saturday it starts at 4 a.m., and on Sunday at 5 a.m. On Friday, 9 a.m. is a toss-up: seven months put it with the day, six with the morning. On weekend evenings, 8 p.m. sometimes tips into the late-night mix.</p>
-
-<p>The result is steady. Refitting the model on five random 80% slices of the slots gave almost identical groups each time (agreement score 0.99 out of 1). A model fitted only on August to February and one fitted only on March to August also largely agreed (0.92).</p>
+<p>The morning starts later as the week goes on: 3 a.m. Monday to Thursday, 4 a.m. Friday and Saturday, 5 a.m. Sunday. Refits on random 80% slices gave the same groups (agreement 0.99 out of 1).</p>
 
 <h2>What each run buys</h2>
 
-<p>The morning mix is the sharpest. In morning slots, coffee and hot drinks make up 3.6% of items sold, against 1.5% across all slots. Energy drinks are 9.0% against 5.3%. Hot food and sweet baked goods are also higher. Beer falls to 1.7% of items, less than half its usual 3.9%.</p>
-
-<p>The daytime and evening mix is the store's main business. It over-indexes on lottery (6.1% of items against 4.4%), fuel and beer. The late-night mix leans on cigars and other tobacco, salty snacks, candy and grocery items. It also has more items from departments with no label, so part of that group is how stores ring things up, not only what people buy.</p>
+<p>The morning is the sharpest. Coffee is 3.6% of items sold (1.5% overall), energy drinks 9.0% (5.3%), and beer's share halves. The day leans on lottery, fuel and beer. Late night leans on tobacco, salty snacks and candy.</p>
 
 <figure>
   <h3>Mornings are about coffee, energy drinks and hot food; late nights about snacks and tobacco</h3>
-  <p class="read">Each category's share of items sold in each mix, compared with its share across all 2,184 slots. 1× means the same as average. Hover for the actual shares.</p>
+  <p class="read">Each category's share of items in each mix against its average across all slots. 1× is average. Hover for the shares.</p>
   <div class="chart" id="c-mix"></div>
   <div class="src">Source: PDI, cluster means in <code>docs/stories/segments/retail/time_slots.json</code>. Shares are of item lines; each slot counts equally.</div>
 </figure>
 
-<p>Plain hourly counts back this up without any model. Of all the coffee sold in a day, 16.6% sells in the 7 a.m. hour, against 5.5% of all items. Energy drinks and sweet baked goods also peak at 7 a.m. Beer peaks at 5 p.m., when 11.2% of the day's beer is sold.</p>
+<p>Raw hourly counts agree without any model: 16.6% of the day's coffee sells in the 7 a.m. hour. Beer peaks at 5 p.m.</p>
 
 <figure>
   <h3>Coffee, energy drinks and pastries peak at 7 a.m.; beer at 5 p.m.</h3>
@@ -73,13 +67,11 @@
   <div class="src">Source: PDI item lines by hour, category and month (<code>cat_hour_month</code>); peak hours match <code>category_peaks</code> in <code>docs/stories/segments/retail/summary.json</code>.</div>
 </figure>
 
-<p>Two caveats matter for an operator. First, the model weighs every hour the same, busy or quiet. Late-night slots are 28% of the slots but only 9% of the items sold. The daytime and evening slots carry 69%, and the morning 22%. Second, three groups only narrowly beat two. With two groups, the morning and the day merge and the late night stands alone. The morning run is the finer cut.</p>
+<p>Two caveats. The model weighs quiet hours like busy ones: late night is 28% of the slots but only 9% of the items. And three groups only narrowly beat two.</p>
 
 <h2>Nearly a third of baskets are fuel and nothing else</h2>
 
-<p>The second question is what a basket looks like. Here we use plain counts, not clusters. Of all basket records, 30.8% hold fuel and nothing else. Another 5.4% hold fuel plus something from the store. The other 63.8% have no fuel at all.</p>
-
-<p>Fuel-only baskets are big. They average $37.48, against $12.41 for a basket with no fuel. So those 30.8% of baskets bring in 54% of all basket revenue. The share barely moves through the year: between 29.6% and 32.1% in every month.</p>
+<p>30.8% of baskets hold fuel and nothing else. They average $37.48, against $12.41 for a basket with no fuel, so they bring in 54% of basket revenue. Every month falls between 29.6% and 32.1%.</p>
 
 <figure>
   <h3>Fuel-only baskets are 31% of baskets and 54% of the money</h3>
@@ -88,46 +80,42 @@
   <div class="src">Source: PDI basket histogram (<code>basket_month</code>); fuel-only share matches <code>fuel_only_share</code> in <code>docs/stories/segments/retail/summary.json</code>.</div>
 </figure>
 
-<p>The fuel customer rarely adds anything. Of all baskets with fuel in them, about 1 in 7 (15%) holds anything else. One reason may be how sales are recorded: a driver who pays at the pump and then buys a coffee inside may show up as two baskets. The data can't tell those apart.</p>
-
-<p>Fuel-only baskets are most common in the late morning. They are 34.4% of baskets in the 10 a.m. hour and fall to 22.6% at 1 a.m., when the store sells relatively more snacks, tobacco and drinks.</p>
+<p>Only about 1 in 7 fuel baskets holds anything else. Some of that is bookkeeping: paying at the pump and then buying a coffee inside can show up as two baskets. Fuel-only peaks at 10 a.m. (34.4% of baskets) and bottoms out at 1 a.m. (22.6%).</p>
 
 <figure>
   <h3>Fuel-only baskets peak mid-morning and fade at night</h3>
-  <p class="read">Fuel-only baskets as a share of all baskets in each hour of the day. Dashed line: all hours.</p>
+  <p class="read">Fuel-only baskets as a share of all baskets in each hour. Dashed line: all hours.</p>
   <div class="chart" id="c-fuelhour"></div>
   <div class="src">Source: PDI basket histogram (<code>basket_month</code>), August 2025 to August 2026.</div>
 </figure>
 
-<p>Baskets without fuel are small. They average 2.1 items, and 44% are a single item. Cigarettes are the most common named category, in 13.4% of them. Soft drinks, energy drinks and lottery are each in about 11%, and beer in 9.7%.</p>
+<p>Baskets without fuel are small: 2.1 items on average, and 44% are a single item. Cigarettes lead (13.4%), then soft drinks, energy drinks and lottery (about 11% each).</p>
 
 <figure>
   <h3>Cigarettes, soft drinks, energy drinks and lottery lead the non-fuel basket</h3>
-  <p class="read">Share of baskets with no fuel that contain at least one item from each category. A basket can count in several rows.</p>
+  <p class="read">Share of no-fuel baskets holding at least one item from each category. A basket can count in several rows.</p>
   <div class="chart" id="c-comp"></div>
   <div class="src">Source: PDI category co-purchase counts (<code>copurchase_month</code>). 41.6% of these baskets also hold at least one item the category classifier could not place, so each share here is a lower bound.</div>
 </figure>
 
 <h2>What sells together</h2>
 
-<p>The last question is which products share a basket. Lift measures this: it compares how often two categories appear together with how often they would if shoppers picked them independently. A lift of 1 means chance.</p>
-
-<p>Coffee and sweet baked goods have the highest lift of any pair: 3.78. It held between 3.61 and 3.93 in every one of the 13 months. But the pair is in only 0.13% of baskets, about 1.3 million. Candy and salty snacks pair less tightly, at a lift of 3.33, but they share 0.56% of baskets, more than four times as many. Salty snacks and soft drinks reach the most baskets of any strong pair, 0.83%, at a lift of 2.69. At the other end, cigarettes and fuel turn up together at about a quarter of the rate chance would predict.</p>
+<p>Lift compares how often two categories share a basket with how often chance would put them there. 1 means chance. Coffee and sweet baked goods top the list at 3.8×, and it holds every month. But they're in only 0.13% of baskets. Salty snacks and soft drinks pair more loosely (2.7×) and reach six times as many baskets. Cigarettes and fuel meet at a quarter of the rate chance predicts.</p>
 
 <figure>
   <h3>Coffee and pastries stick together hardest; snacks and soft drinks reach the most baskets</h3>
-  <p class="read">Each dot is a pair of product categories. Across: share of all baskets that hold both. Up: lift. Both axes use a log scale. Dashed line: chance.</p>
+  <p class="read">Each dot is a pair of categories. Across: share of baskets holding both. Up: lift. Log scales. Dashed line: chance.</p>
   <div class="chart" id="c-pairs"></div>
   <div class="src">Source: PDI pair table <code>docs/stories/segments/retail/category_pairs.csv</code>: 263 pairs in at least 10,000 baskets, excluding unclassified items and accounting adjustments. Monthly ranges from the same file.</div>
 </figure>
 
-<p>The pair table has no hours, so it can't show that coffee and pastries are bought together in the morning. It shows that they go together, and the time-slot model shows that both are morning products. For an operator, that points to two different tests. A coffee-and-pastry deal targets a tight but small group. A candy-and-chips or chips-and-soda deal is a looser habit that reaches four to six times as many baskets.</p>
+<p>That suggests two tests: a coffee-and-pastry deal for a small, tight group, and a snacks-and-soda deal for a looser habit that reaches far more baskets.</p>
 
 <section class="method">
   <h2>How this analysis was done</h2>
-  <p><b>Data.</b> PDI convenience-store line items, August 2025 to August 2026, from a sample of 168 of 673 files. Baskets are rebuilt within each file, so a basket can occasionally be split across files. Counts are sampled basket records, not national totals. The data have no exact sale date, so holidays can't be separated, and the stores are participating independent operators, not a random sample of all U.S. stores. Store time zones are not verified, but the 7 a.m. coffee peak suggests local time. About a quarter of items can't be placed in a category by the classifier.</p>
-  <p><b>Time slots.</b> Each of 2,184 month × weekday × hour slots is described by its share of item lines in 31 categories, then scaled. K-means compared 2 to 9 groups; 3 scored best (silhouette 0.343, against 0.338 for 2). Stability across five 80% subsamples averaged 0.99 (adjusted Rand index); fits on the first and second halves of the year agreed at 0.92. Slots count equally regardless of sales volume. The late-night group is partly defined by unlabeled and unclassified items. A project audit rates this the best-validated clustering result in the project. The weekday × hour chart reproduces the published model exactly (same group sizes and hour counts) to recover each slot's group.</p>
-  <p><b>Baskets and pairs.</b> Basket make-up uses plain shares of all 980 million basket records, not a clustering. Non-fuel composition uses the category co-purchase table, where a basket counts once per category. Lift is pooled over 13 months; the monthly range is the lowest and highest monthly lift. Store-level mixes and category clusters were left out because they failed the project's own quality checks. The analysis shows patterns, not causes.</p>
+  <p><b>Data.</b> PDI convenience-store line items, August 2025 to August 2026, from 168 of 673 files. Baskets are rebuilt within each file. The stores are participating independents, not a random sample. There are no exact dates, so holidays can't be separated. Time zones are unverified, though the 7 a.m. coffee peak suggests local time. About a quarter of items are unclassified.</p>
+  <p><b>Time slots.</b> 2,184 month × weekday × hour slots, each described by its share of item lines across 31 categories, then scaled. K-means was tried for 2 to 9 groups, and 3 scored best (silhouette 0.343, against 0.338 for 2). Five 80% subsamples agreed at 0.99 (adjusted Rand index), and the first and second halves of the year at 0.92. Slots count equally regardless of volume. The late-night group is partly defined by unclassified items.</p>
+  <p><b>Baskets and pairs.</b> Plain shares of all 980 million basket records, not clusters. Lift is pooled over 13 months; monthly ranges are the lowest and highest monthly lift. Store-level and category clusters failed the project's own quality checks and are left out. These are patterns, not causes.</p>
 </section>
 </article>
 </div>
