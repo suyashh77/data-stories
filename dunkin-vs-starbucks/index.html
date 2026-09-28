@@ -3,105 +3,205 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dunkin&#x27; Peaks at 9 A.M. Starbucks Peaks at Noon.</title>
+<title>Dunkin&#x27; vs Starbucks</title>
 <meta name="description" content="A cheaper weekday routine and a weekend treat on different clocks, and a payment system that makes card counts an incomplete picture of the coffee run.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
 <link rel="stylesheet" href="../assets/site.css">
-<style>:root{--a:#eb6834;--b:#1baf7a;--wm:var(--a);--tg:var(--b);--hl:var(--a);--hl2:var(--b)}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--a:#d95926;--b:#199e70}}:root[data-theme="dark"]{--a:#d95926;--b:#199e70}</style>
+<style>:root{--a:#eb6834;--b:#1baf7a;--wm:var(--a);--tg:var(--b);--hl:var(--a);--hl2:var(--b);--g:#1baf7a}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--a:#d95926;--b:#199e70;--g:#199e70}}:root[data-theme="dark"]{--a:#d95926;--b:#199e70;--g:#199e70}</style>
 </head>
 <body>
 <header class="site-head"><a class="wordmark" href="../index.html">Questions, answered with data</a><nav class="site-links" aria-label="Site"><a href="../index.html#stories" aria-current="page">Stories</a><a href="https://suyashh77.github.io/suyashsapre_portfolio/">Portfolio</a></nav></header>
-<div class="switch-row"><nav class="view-switch" aria-label="Story view"><a href="index.html" aria-current="page">Story</a><a href="charts.html">Every chart</a></nav></div>
-<div class="article">
-<header class="masthead">
-  <div class="kicker">What America Is Buying · Retail</div>
-  <h1 class="hed">Dunkin' Peaks at 9 A.M. Starbucks Peaks at Noon. What Does That Say About Their Customers?</h1>
-  <p class="dek">The coffee rivals draw overlapping audiences. Their daily routines, and the way customers pay, tell different stories.</p>
-  <div class="byline">Data analysis · September 2026</div>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">What America Is Buying · Retail</div>
+  <h1>Dunkin' Peaks at 9 A.M. Starbucks Peaks at Noon. What Does That Say About Their Customers?</h1>
+  <p class="dek">Phone and card data show Dunkin' as a quick weekday morning stop and Starbucks as a busier, later and more weekend-heavy one, with a payment app that changes how their sales compare.</p>
+  <div class="byline">Data analysis · September 2026 · Sources: Advan, SafeGraph, ConsumerEdge, Consumer Profiles</div>
 </header>
 
-<div class="prose">
-<p class="lede">By the time Starbucks reaches its busiest hour, Dunkin's morning peak is three hours behind it. Dunkin' traffic peaks at 9 a.m., according to phone-location estimates covering the year through July 2026. Starbucks peaks at noon.</p>
-</div>
+<article>
+<p>Dunkin' is busiest at 9 a.m. Starbucks is busiest at noon. That is the clearest difference between the two coffee chains in phone-location estimates for the year through July 2026.</p>
 
-<figure><h3>Dunkin' peaks at 9am; Starbucks peaks at noon</h3><p class="read">Share of each chain's visits in each hour of the day (local time, all seven days). Gray lines are the 300 largest chains.</p><div class="chart" id="c-hour"></div><div class="src">Source <sup class="ref"><a href="#s3">3</a></sup>. A visit counts in every hour it overlaps, so read these as the shape of the day.</div></figure>
+<p>Much else lines up with it. Dunkin' gets more of its visits on weekdays, its visits are shorter, and its card customers buy more often and spend less each time. Starbucks gets a larger share of its visits at the weekend and more of them after 5 p.m. The pattern fits a familiar split: Dunkin' as the cheaper weekday coffee on the way to work, Starbucks as more of a treat people make time for at the weekend. The data fit that pattern. They cannot show why people choose one or the other.</p>
 
-<div class="prose">
-<p>Among 1,720 chains with at least 100 locations in the data, Dunkin' ranks in the top 4% for how much of its traffic falls in the early morning: <span class="num">31.8%</span> of its visits come between 5 and 10 a.m. Starbucks, at <span class="num">19.8%</span>, sits almost exactly at the median chain. That difference offers a useful starting point. Both chains sell a familiar daily purchase. But do they occupy the same place in customers' routines?</p>
-</div>
+<p>The two chains draw overlapping crowds. A third of Dunkin's card customers also buy at Starbucks in the same month, and the demographic profiles of their spending are close. Spending comparisons need care, because Starbucks customers pay a large share through prepaid cards and the Starbucks app.</p>
 
-<figure><h3>Among 1,720 chains, Dunkin' is in the top 4% for early-morning traffic</h3><p class="read">Share of visits between 5am and 10am, every chain with at least 100 stores (gray bars count chains).</p><div class="chart" id="c-morning"></div><div class="src">Source <sup class="ref"><a href="#s3">3</a></sup>.</div></figure>
+<h2>When they go</h2>
 
-<div class="prose">
-<p>Starbucks stretches further into the day and further into the weekend. <span class="num">31.4%</span> of its visits fall on a Saturday or Sunday, against <span class="num">29.9%</span> at Dunkin'. Saturday alone brings <span class="num">17.0%</span> of Starbucks visits and <span class="num">15.9%</span> of Dunkin's, and Starbucks has the higher Saturday share in all 42 states with enough stores from both chains to compare.</p>
-<p>The pattern fits a familiar split. Dunkin' behaves like a weekday routine: a cheaper coffee on the way to work. Starbucks behaves more like a treat that people make time for at the weekend. Visit timing alone can't show motive, but the prices and purchase counts below point the same way.</p>
-</div>
+<p>Among 1,720 chains with at least 100 locations in the data, Dunkin' ranks in the top 4% for how much of its traffic falls in the early morning: 31.8% of its visits come between 5 and 10 a.m. Starbucks, at 19.8%, sits almost exactly at the median chain's 19.4%. Starbucks draws more of its visits later in the day: 23.7% come after 5 p.m., against 17.5% at Dunkin'.</p>
 
-<figure><h3>Starbucks leans on the weekend; Dunkin' on the workweek</h3><p class="read">Share of each chain's visits by day of the week, last 12 months. Gray is every US place.</p><div class="chart" id="c-dow"></div><div class="src">Source <sup class="ref"><a href="#s3">3</a></sup>.</div></figure>
+<figure>
+  <h3>Dunkin' peaks at 9 a.m.; Starbucks peaks at noon</h3>
+  <p class="read">Share of each chain's visits in each hour of the day (local time, all seven days), August 2025 to July 2026. Gray lines are the 300 largest chains. The shaded band is 5 a.m. to 10 a.m.</p>
+  <div class="chart" id="c-hour"></div>
+  <div class="src">Source: Advan Weekly Patterns, one sampled week per month. A visit counts in every hour it overlaps, so these are shapes of the day, not visit counts.</div>
+</figure>
 
-<div class="prose">
-<p>Starbucks also draws substantially more traffic. Its average location receives an estimated <span class="num">3,360</span> visits a week, against <span class="num">1,600</span> for Dunkin'. Comparing stores within the same state narrows the gap somewhat, but Starbucks remains busier in 41 of the 42 states studied.</p>
-</div>
+<p>Only 59 chains lean harder into the morning than Dunkin'. Tim Hortons is one of them, at 36.0%. Starbucks sits in the middle of the pack, next to Chick-fil-A and Panera.</p>
 
-<figure><h3>A Starbucks gets twice the visits of a Dunkin', and the gap holds in 41 of 42 states</h3><p class="read">Estimated visits per store per week, last 12 months, coffee and breakfast chains.</p><div class="chart" id="c-vpsw"></div><div class="src">Source <sup class="ref"><a href="#s3">3</a></sup>. Levels depend on the phone panel; the ratio is the finding.</div></figure>
+<figure>
+  <h3>Among 1,720 chains, Dunkin' is in the top 4% for early-morning traffic</h3>
+  <p class="read">Share of visits between 5 a.m. and 10 a.m., every chain with at least 100 stores, August 2025 to July 2026. Gray bars count chains; the dashed line is the median chain.</p>
+  <div class="chart" id="c-morning"></div>
+  <div class="src">Source: Advan Weekly Patterns, sampled weeks, 2023 methodology era.</div>
+</figure>
 
-<div class="prose">
-<p>Dunkin', meanwhile, shows a stronger pattern of repeat purchasing in store-level card data. A Dunkin' customer made <span class="num">2.21</span> recorded card purchases a month at the same store, against <span class="num">1.67</span> at Starbucks. Its average card transaction was smaller, <span class="num">$9.22</span> against <span class="num">$12.47</span>, leaving recorded monthly spending per customer almost equal at about <span class="num">$20</span>. An average transaction is not the price of a coffee, and a card purchase is not a complete count of café visits.</p>
-</div>
+<p>Starbucks leans more on the weekend. Of its visits, 31.4% fall on a Saturday or Sunday, against 29.9% at Dunkin'. Saturday is the busiest day for both, bringing 17.0% of Starbucks visits and 15.9% of Dunkin's. Starbucks has the higher Saturday share in all 42 states where both chains have at least five stores, and the higher weekend share in 40 of them. Dunkin' gets 70.1% of its visits from Monday to Friday, against 68.6% at Starbucks.</p>
 
-<figure><h3>Dunkin' customers make more card purchases and spend less each time</h3><p class="read">Card purchases per customer per month at the same store (y) against average card transaction (x), every brand with at least 100 stores, Oct 2024 to Sep 2025.</p><div class="chart" id="c-scatter"></div><div class="src">Source <sup class="ref"><a href="#s2">2</a></sup>. The transaction axis is logarithmic.</div></figure>
+<p>That fits Dunkin' as the cheaper weekday routine, a coffee before work, and Starbucks as more of a weekend treat. The gap is small, and visit timing alone can't show why people go. The lower Dunkin' transaction and its more frequent purchases, further down, point the same way.</p>
 
-<div class="prose">
-<p>Dunkin' led on that purchase frequency in 38 of 42 states, and its average transaction was lower in 41. The pattern fits the daily schedules: more frequent, smaller purchases at the chain whose traffic is concentrated earlier.</p>
-</div>
+<figure>
+  <h3>Starbucks leans on the weekend; Dunkin' on the workweek</h3>
+  <p class="read">Share of each chain's visits on each day of the week, August 2025 to July 2026. Gray bars are all U.S. places.</p>
+  <div class="chart" id="c-dow"></div>
+  <div class="src">Source: Advan Weekly Patterns daily visit counts.</div>
+</figure>
 
-<figure><h3>In 38 of 42 states, Dunkin' customers make more card purchases than Starbucks customers</h3><p class="read">Card purchases per customer per month at the same store, by state: Starbucks (x) against Dunkin' (y). Each dot is a state, coloured by which chain is higher.</p><div class="chart" id="c-states"></div><div class="src">Source <sup class="ref"><a href="#s2">2</a></sup>. States with at least 5 stores of each chain.</div></figure>
+<p>Dunkin' visits are also shorter. Of its visits, 87% last under five minutes, against 77% at Starbucks and 74% at all U.S. places. Only 5.3% of Dunkin' visits last 21 minutes or more, about half the Starbucks share of 10.0%. The gap holds within 41 of 42 states. Very short visits include drive-through stops and people passing by, so the comparison between the chains is more reliable than the levels.</p>
 
-<div class="prose">
-<p>Those card transactions need careful reading, particularly at Starbucks. Over the latest year, cardholders paid <span class="num">$748 million</span> into Starbucks cards and apps, more than the <span class="num">$682 million</span> recorded as direct café purchases. Loading an app is a payment to Starbucks, not a café visit, and later purchases made with that balance may not appear as new charges on a bank card.</p>
-<p>That matters for claims about frequency and spending. Direct café card purchases alone put annual spending at roughly <span class="num">$115</span> per shopper at both chains. That comparison leaves out a major Starbucks payment channel, so it cannot establish that the typical customer spends the same total at each.</p>
-</div>
+<figure>
+  <h3>Most Dunkin' visits are over in under five minutes</h3>
+  <p class="read">Share of visits by how long they last, August 2025 to July 2026, for each chain and for all U.S. places.</p>
+  <div class="chart" id="c-dwell"></div>
+  <div class="src">Source: Advan Weekly Patterns dwell-time buckets, 2023 methodology era.</div>
+</figure>
 
-<figure><h3>Direct café card spending looks similar, but Starbucks reloads change the comparison</h3><p class="read">Card purchases per shopper in the 12 months to Aug 9, 2026, coffee and breakfast chains. Starbucks counts direct café card purchases only; reloads are not included.</p><div class="chart" id="c-percap"></div><div class="src">Source <sup class="ref"><a href="#s1">1</a></sup>.</div></figure>
+<h2>How often they buy and what they spend</h2>
 
-<div class="prose">
-<p>It also changes the apparent competitive trend. Looking only at direct café payments makes Dunkin' appear to gain ground, from <span class="num">0.56</span> of Starbucks' spending in 2022 to <span class="num">0.60</span> in 2026. Including card and app reloads produces a steadier relationship: Dunkin's tracked spending has stayed at about <span class="num">28%</span> of Starbucks' every year since 2021.</p>
-</div>
+<p>In store-level card data, a Dunkin' customer made 2.21 card purchases a month at the same store, against 1.67 at Starbucks. The average Dunkin' transaction was smaller, $9.22 against $12.47. Monthly card spending per customer ends up nearly equal: $20.35 at Dunkin' and $20.78 at Starbucks. An average transaction is not the price of a coffee, and card purchases do not count every café visit.</p>
 
-<figure><h3>Counting reloads, Dunkin's spending has held steady against Starbucks since 2021</h3><p class="read">Share of all tracked card spending, monthly, May 2021 to Jul 2026. Solid green is Starbucks café purchases plus reloads; dashed green is café purchases only.</p><div class="chart" id="c-share"></div><div class="src">Source <sup class="ref"><a href="#s1">1</a></sup>. Shares cancel changes in panel size.</div></figure>
+<p>Regulars make the difference. At Dunkin', 9% of customers buy five or more times a month at one store, against 5% at Starbucks.</p>
 
-<div class="prose">
-<p>The customer divide is less dramatic than the difference in schedules. Households earning more than $150,000 account for <span class="num">33%</span> of Starbucks' tracked spending and <span class="num">29%</span> of Dunkin's, and Starbucks gets a slightly larger share from people under 35. Those are spending shares, not counts of customers, and they describe a modest tilt: the two profiles move together across nearly every group.</p>
-</div>
+<figure>
+  <h3>Dunkin' customers make more card purchases and spend less each time</h3>
+  <p class="read">Card purchases per customer per month at the same store (vertical) against average card transaction (horizontal, log scale), every brand with at least 100 stores in the card panel, October 2024 to September 2025.</p>
+  <div class="chart" id="c-scatter"></div>
+  <div class="src">Source: SafeGraph Spend Patterns (card panel). Months after September 2025 are not used because of a change in the panel.</div>
+</figure>
 
-<figure><h3>Against 294 big brands, the two crowds look alike; Starbucks tilts a little younger and richer</h3><p class="read">Share of each brand's card spending from each group, 12 months to Aug 9, 2026. Gray dots are the 294 largest card-spend brands.</p><div class="chart" id="c-mix"></div><div class="src">Source <sup class="ref"><a href="#s1">1</a></sup>. Demographics are modelled; unknowns excluded.</div></figure>
+<p>The gap is not a Northeast effect. Dunkin' customers made more card purchases in 38 of 42 states. Matched state by state, they make 1.33 times as many monthly purchases as Starbucks customers, about the same as the national ratio of 1.32. California is the clearest exception. Dunkin's average transaction is lower in 41 of the 42 states, at about 79% of the Starbucks figure. Hawaii is the exception.</p>
 
-<div class="prose">
-<p>Geography contributes to the contrast. About <span class="num">53%</span> of Dunkin' locations in the data are in the Northeast, compared with <span class="num">13%</span> of Starbucks locations. Yet the differences in purchase frequency and transaction size persist when the chains are compared within the same states.</p>
-</div>
+<figure>
+  <h3>In 38 of 42 states, Dunkin' customers make more card purchases than Starbucks customers</h3>
+  <p class="read">Card purchases per customer per month at the same store, by state: Starbucks (horizontal) against Dunkin' (vertical), October 2024 to September 2025. Each dot is a state, orange where Dunkin' is higher and green where Starbucks is. Dashed line: equal.</p>
+  <div class="chart" id="c-states"></div>
+  <div class="src">Source: SafeGraph Spend Patterns. States with at least 5 stores of each chain. The same-state ratio is the mean log ratio across states, weighted by both chains' customers.</div>
+</figure>
 
-<figure><h3>Half of Dunkin's stores are in the Northeast; Starbucks is everywhere</h3><p class="read">Each state's stores of the two chains, split between them. States in bold are the nine Northeast states.</p><div class="chart" id="c-footprint"></div><div class="src">Source <sup class="ref"><a href="#s3">3</a></sup>.</div></figure>
+<h2>How Starbucks customers pay</h2>
 
-<div class="prose">
-<p>Customers also cross between them. In July 2025, <span class="num">32%</span> of Dunkin's card customers also made a Starbucks purchase that month, and <span class="num">23%</span> of Starbucks' bought at Dunkin'. Because the underlying cross-shopping lists are truncated, those figures are minimum overlaps, not a complete accounting of shared customers.</p>
-</div>
+<p>Starbucks card data need careful reading. Over the latest year, cardholders in ConsumerEdge's panel paid $748 million into Starbucks cards and apps, more than the $682 million recorded as direct café purchases. About 2.2 million panel cardholders made a reload. A reload is a payment to Starbucks, not a café visit, and purchases made later from that balance do not appear as new charges on a bank card.</p>
 
-<figure><h3>A third of Dunkin's card customers also buy at Starbucks in the same month</h3><p class="read">Share of each chain's card customers who also bought at the other chain in the same month, Oct 2024 to Sep 2025.</p><div class="chart" id="c-overlap"></div><div class="src">Source <sup class="ref"><a href="#s2">2</a></sup>.</div></figure>
+<p>Direct café card purchases alone make the two chains look alike. A Dunkin' cardholder made 11.0 purchases in the year at $10.56 each, $116 in all. A Starbucks café cardholder made 8.7 at $13.21, $115 in all. That comparison leaves out a major Starbucks payment channel, so it cannot show that the typical customer spends the same total at each.</p>
 
-<div class="prose">
-<p>The data leave room for both brands in the same person's week. What distinguishes them most clearly is the rhythm of the business: Dunkin's morning concentration, Starbucks' broader day, and two payment systems that make a simple count of card transactions an incomplete picture of the coffee habit.</p>
-</div>
+<figure>
+  <h3>Direct café card spending looks similar, but Starbucks reloads change the comparison</h3>
+  <p class="read">Card purchases per shopper in the 12 months to Aug. 9, 2026, coffee and breakfast chains, with the average purchase and yearly total. Starbucks counts direct café card purchases only; card and app reloads are not included.</p>
+  <div class="chart" id="c-percap"></div>
+  <div class="src">Source: ConsumerEdge card panel. Starbucks café purchases are the STARBUCKS (MERCHANT) line; reloads are not café visits.</div>
+</figure>
 
-<div class="sources">
-<h2>Sources and limits</h2>
-<ol>
-  <li id="s1"><b>ConsumerEdge</b>, brand and demographic cohort card-spending panel (via Dewey), May 2021 to Aug 2026. Annual purchases and spend per shopper; Starbucks café purchases (STARBUCKS (MERCHANT)) and card/app reloads (STARBUCKS CARD) tracked separately; spending by modelled demographics; monthly share of spending across tracked brands.</li>
-  <li id="s2"><b>SafeGraph Spend Patterns</b>, store-level card-spending panel (via Dewey), Oct 2024 to Sep 2025 for these comparisons. Card purchases and spend per customer by state and brand, same-month cross-shopping. Months after Sep 2025 are excluded because the panel changes in Oct 2025.</li>
-  <li id="s3"><b>Advan Weekly Patterns</b>, phone-location visit estimates (via Dewey), 2023 methodology era, through Jul 2026. Visits by hour and weekday, visits per store, store locations.</li>
-</ol>
-<p>The panels are samples, so levels are estimates; the comparisons between the chains are the finding. No source shares a person, card or phone with another. Card purchases count charges on bank cards, so purchases paid from a preloaded Starbucks balance are not captured as separate transactions. Nothing here establishes cause.</p>
-</div>
+<p>Reloads also change the trend. Counting café purchases plus reloads, Dunkin' takes about 0.13% of tracked card spending and Starbucks about 0.47%, and Dunkin's spending has stayed at about 0.28 times Starbucks' every year since 2021. Counting café purchases alone, Dunkin' appears to gain ground, from 0.56 of Starbucks in 2022 to 0.60 in 2026. That is because reloads grew from 49% to 53% of Starbucks card spending over the period.</p>
+
+<figure>
+  <h3>Counting reloads, Dunkin's spending has held steady against Starbucks since 2021</h3>
+  <p class="read">Share of all tracked card spending, monthly, May 2021 to July 2026. Solid green is Starbucks café purchases plus card and app reloads; dashed green is café purchases only. Gray lines are other coffee and breakfast chains.</p>
+  <div class="chart" id="c-share"></div>
+  <div class="src">Source: ConsumerEdge card panel. Shares cancel changes in panel size.</div>
+</figure>
+
+<h2>Traffic and seasons</h2>
+
+<p>An average Starbucks is about twice as busy as an average Dunkin'. It receives an estimated 3,360 visits a week, against 1,600 at Dunkin'. Starbucks also has more stores in the data, 17,360 against 9,550. Both sit well below McDonald's (4,720) and Chick-fil-A (6,260).</p>
+
+<p>Dunkin's stores are concentrated in the Northeast, so the chains were also compared inside each state. The gap barely moves: a Dunkin' gets 55% of a Starbucks' weekly visits in the same state, against 48% nationally. Starbucks is busier in 41 of 42 states. Hawaii is the only state where an average Dunkin' is busier.</p>
+
+<figure>
+  <h3>A Starbucks gets twice the visits of a Dunkin', and the gap holds in 41 of 42 states</h3>
+  <p class="read">Estimated visits per store per week, August 2025 to July 2026, coffee and breakfast chains.</p>
+  <div class="chart" id="c-vpsw"></div>
+  <div class="src">Source: Advan Weekly Patterns (phone-based visit estimates), U.S. stores, 2023 methodology era. Levels depend on the phone panel; the ratio between chains is the finding. Same-state figure: 42 states with at least 5 stores of each chain.</div>
+</figure>
+
+<p>Store traffic has grown faster at Starbucks. Over the last 12 months, visits per store rose 2.8% from a year earlier at Starbucks and 0.7% at Dunkin'. In July 2026, same-store traffic was up 4.4% at Starbucks and 1.8% at Dunkin'. Card spending grew at about the same pace at both, 1.9% in the latest year.</p>
+
+<figure>
+  <h3>Store traffic has grown faster at Starbucks over the past year</h3>
+  <p class="read">Estimated visits per store per week, monthly, January 2023 to July 2026. Gray lines are other coffee and breakfast chains.</p>
+  <div class="chart" id="c-traffic"></div>
+  <div class="src">Source: Advan Weekly Patterns, 2023 methodology era only. Year-on-year figures compare the same months.</div>
+</figure>
+
+<p>Both chains have an autumn high in card spending. Starbucks peaks in September, 9% above its average month, and stays high through November. January is its low, 8% below average. Dunkin' is flatter. It peaks in October, 6% above average, and December is its weakest month, 7% below. Tim Hortons, the outlying gray line, peaks in summer in this U.S. panel.</p>
+
+<figure>
+  <h3>Both chains have an autumn high; December is Dunkin's weakest month</h3>
+  <p class="read">Each chain's share of card spending in each calendar month, as a percentage above or below its average month, 2022 to 2025. Gray lines are other coffee and breakfast chains.</p>
+  <div class="chart" id="c-season"></div>
+  <div class="src">Source: ConsumerEdge card panel, monthly share of all tracked-brand spending, so panel growth and overall holiday spending cancel out. Starbucks includes card and app reloads.</div>
+</figure>
+
+<h2>Where the stores are</h2>
+
+<p>About 53% of Dunkin' stores in the data are in the nine Northeast states, against 13% of Starbucks stores. Dunkin' has more stores than Starbucks in all nine, plus Delaware and Maryland, and fewer everywhere else. Seven states in the data (Alaska, Idaho, Montana, North Dakota, Oregon, South Dakota and Washington) have no Dunkin' at all.</p>
+
+<figure>
+  <h3>Half of Dunkin's stores are in the Northeast; Starbucks is everywhere</h3>
+  <p class="read">Each state's stores of the two chains, split between them, August 2025 to July 2026. States in bold are the nine Northeast states. States with fewer than 10 stores in total are left out.</p>
+  <div class="chart" id="c-footprint"></div>
+  <div class="src">Source: Advan points of interest with visits.</div>
+</figure>
+
+<p>Customers cross between the chains. In July 2025, 32% of Dunkin's 2.1 million panel card customers also bought at Starbucks that month, and 23% of Starbucks' 1.7 million bought at Dunkin'. Across the year the shares ranged from 30% to 34% one way and from 21% to 24% the other. Each chain is the other's top coffee rival in these lists, and McDonald's, Walmart and Target head both. The lists are truncated to each store's top brands, so these are minimum overlaps.</p>
+
+<figure>
+  <h3>A third of Dunkin's card customers also buy at Starbucks in the same month</h3>
+  <p class="read">Share of each chain's card customers who also bought at the other chain in the same month, monthly, October 2024 to September 2025.</p>
+  <div class="chart" id="c-overlap"></div>
+  <div class="src">Source: SafeGraph Spend Patterns cross-shopping lists (card panel). Lists are truncated to each store's top brands, so shares are lower bounds.</div>
+</figure>
+
+<h2>Who goes</h2>
+
+<p>The customer divide is smaller than the difference in schedules. The two chains' spending profiles move together, with a correlation of 0.89 across 28 demographic groups in every year since 2022. Households earning more than $150,000 account for 33% of Starbucks' tracked spending and 29% of Dunkin's. Starbucks takes a little more from people under 35 (32% against 30%), and Dunkin' more from people over 55 (25% against 22%). These are shares of spending, not counts of customers.</p>
+
+<figure>
+  <h3>Against 294 big brands, the two crowds look alike; Starbucks tilts a little younger and richer</h3>
+  <p class="read">Share of each brand's card spending from each age group and from the lowest and highest income groups, 12 months to Aug. 9, 2026. Gray dots are the 294 largest card-spend brands.</p>
+  <div class="chart" id="c-mix"></div>
+  <div class="src">Source: ConsumerEdge card panel. Demographics are modelled; unknowns are excluded; groups of at least 30 people. Starbucks includes card and app reloads.</div>
+</figure>
+
+<p>Where visitors live points the same way. Starbucks visitors come from neighborhoods with more high earners: 11.9% of residents are in the top income bands, against 9.9% for Dunkin'. That gap survives within counties. Among visitors living in the same county, Starbucks' neighborhoods are richer in 63% of 2,215 counties.</p>
+
+<p>Other national gaps do not survive. Dunkin' visitors' neighborhoods have more residents flagged Republican, 14.1% against 10.9%, and Starbucks' have more millennials and more people living in multi-family housing. Inside the same county, each of these comes close to an even split, between 49% and 53%. They follow where the stores are more than who each chain draws locally.</p>
+
+<figure>
+  <h3>Starbucks visitors come from somewhat better-off neighborhoods, even within the same county</h3>
+  <p class="read">Make-up of the census block groups that each chain's visitors come from, weighted by visitors. The gray tick is all U.S. residents. The right-hand column compares the two chains' visitors who live in the same county; bold means the gap survives there.</p>
+  <div class="chart" id="c-cp"></div>
+  <div class="src">Source: Advan visitor home block groups (sampled weeks, 2023 methodology era) joined to Consumer Profiles (block groups with at least 50 people). These describe neighborhoods, not the shoppers themselves; party is a modelled flag.</div>
+</figure>
+
+<p>Phones seen at the two chains differ more. Of devices seen at Dunkin', 35% are iPhones, against 47% at Starbucks and 55% across all U.S. places. Starbucks ranks above three-quarters of chains; Dunkin' is in the lower 40%. Dunkin's iPhone share is lower in 39 of 42 states, at about three-quarters of the Starbucks share state for state.</p>
+
+<figure>
+  <h3>Phones seen at Dunkin' are far less likely to be iPhones, even within the same state</h3>
+  <p class="read">iPhone share of devices seen at each chain, August 2025 to July 2026, every chain with at least 100 stores. Gray bars count chains; the dashed line is all U.S. places.</p>
+  <div class="chart" id="c-ios"></div>
+  <div class="src">Source: Advan Weekly Patterns device type, 2023 methodology era, same-month shares. This describes phones seen at the stores, not their owners.</div>
+</figure>
+
+<p>The data leave room for both chains in the same person's week. What separates them most clearly is timing: Dunkin's weekday mornings and Starbucks' longer day and busier weekends.</p>
+
+<section class="method">
+  <h2>How this analysis was done</h2>
+  <p><b>Visits, timing, visit length, store counts and phones</b> are from Advan Weekly Patterns, phone-location visit estimates obtained through Dewey, using only data from the 2023 methodology era, through July 2026. The last 12 months are August 2025 to July 2026. Hourly shares come from one sampled week per month, and a visit counts in every hour it overlaps. Same-state comparisons use the 42 states with at least five stores of each chain. Neighborhood make-up joins Advan visitors' home block groups to Consumer Profiles estimates for block groups with at least 50 people.</p>
+  <p><b>Store-level card purchases</b>, purchase frequency, average transaction and cross-shopping are from SafeGraph Spend Patterns (via Dewey), October 2024 to September 2025. Months after September 2025 are excluded because the panel changes in October 2025. <b>Annual purchases, spending shares, seasons and demographics</b> are from ConsumerEdge's brand and demographic card panel (via Dewey), May 2021 to August 2026. Starbucks café purchases (STARBUCKS (MERCHANT)) and card and app reloads (STARBUCKS CARD) are tracked separately. Per-shopper figures use café purchases only; spending shares, seasons and demographics count both.</p>
+  <p>The panels are samples, so levels are estimates; the comparisons between the chains are the finding. No source shares a person, card or phone with another. Card purchases count charges on bank cards, so purchases paid from a preloaded Starbucks balance are not captured as separate transactions. The analysis shows patterns, not causes.</p>
+</section>
+</article>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -424,8 +524,8 @@ try {
   const ra = rows.find(r => r.key === "a"), rb = rows.find(r => r.key === "b");
   note(f.g, x(ra.v) + 60, y(ra.label) + y.bandwidth() / 2, `${pct(ra.v / rb.v)} of a Starbucks nationally, ${pct(m.ratio_matched)} in the same state`, {dx: 30, dy: 0, anchor: "start"});
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 2 overlap over 12 months */
 (() => {
@@ -440,8 +540,8 @@ try {
   note(f.g, x(ym(l.month)), y(l.b_share_at_a), `${pct(l.b_share_at_a)} of ${poss(B)} also bought at ${A}`, {dx: 0, dy: 26});
   pairLegend("c-overlap");
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 3 hour of day */
 (() => {
@@ -457,8 +557,8 @@ try {
   note(f.g, x(7.5), f.ih - 6, "5–10am", {dy: 0, line: false, cls: "muted"});
   pairLegend("c-hour", [["300 largest chains", "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 4 morning histogram */
 (() => {
@@ -470,16 +570,16 @@ try {
     {domain: [0, 0.5], bins: 50, ref: {v: hw.median["5-10am"], label: `median chain ${pct(hw.median["5-10am"], 1)}`, anchor: "end", y: 60}, tick: d3.format(".0%")});
   legend("c-morning", [[A, col("a")], [B, col("b")], ["Chains (count per bar)", "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 5 dwell */
 stacked("c-dwell", [
   {name: A, key: "a", ...DATA.adv.a}, {name: B, key: "b", ...DATA.adv.b}, {name: "All US places", key: "ctx", ...DATA.adv_all}],
   ["dwell_lt5_share", "dwell_5_20_share", "dwell_21_60_share", "dwell_61_240_share", "dwell_gt240_share"],
   ["Under 5 min", "5–20 min", "21–60 min", "1–4 hours", "Over 4 hours"]);
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 6 weekday */
 (() => {
@@ -490,8 +590,8 @@ try {
     {name: "All US places", key: "ctx", vals: days.map(d => all[d + "_share"])}], v => pct(v, 1), {y0: 0.1, labelCats: ["Sat"], tick: d3.format(".0%")});
   note(g.f.g, g.x0("Sat") + g.x0.bandwidth() / 2, g.y(DATA.adv.b.sat_share) - 20, `${B} higher on Saturday in 42 of 42 states`, {dx: -60, dy: -8, anchor: "end"});
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 7 seasonality (CE share by month of year) */
 (() => {
@@ -507,8 +607,8 @@ try {
   note(f.g, x(la), y(S[A][la] / 100 - 1), `${A} Dec ${fmt(S[A][la] / 100 - 1)}`, {dx: -20, dy: 30, anchor: "end"});
   pairLegend("c-season", [["Other coffee and breakfast chains", "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 8 SafeGraph trips x ticket, every brand */
 (() => {
@@ -522,8 +622,8 @@ try {
     tip: d => `<b>${d.label}</b><br>${d.y.toFixed(2)} card purchases a month · ${usd(d.x, 2)} average transaction`});
   legend("c-scatter", [[A, col("a")], [B, col("b")], [`Every other SafeGraph brand (${S.ctx.length})`, "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 9 states: trips per customer */
 (() => {
@@ -533,8 +633,8 @@ try {
   note(r.f.g, r.f.iw * 0.2, r.f.ih * 0.08, `${A} higher in ${m.a_higher} of ${m.states} states\nsame-state ratio ${m.ratio_matched.toFixed(2)}×`, {dy: 0, line: false, anchor: "start"});
   legend("c-states", [[`${A} higher`, col("a")], [`${B} higher`, col("b")]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 10 purchases per shopper */
 (() => {
@@ -542,21 +642,21 @@ try {
     .map(d => ({label: d.key === "b" ? `${B} (café)` : d.brand, v: d.txns_per_person, key: d.key, suffix: `  · ${usd(d.ticket, 2)} each · ${usd(d.spend_per_person)} a year`}));
   hbars("c-percap", rows, v => v.toFixed(1), {left: 130, pad: 1.55});
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 11 footprint by state */
 stackCols("c-footprint", stateRows(DATA.region), {h: 260});
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 12 demographic mix strips */
 (() => {
   const g = [...mixGroups("AGE"), ...mixGroups("INCOME", ["Less than or equal to $40,000", "$150,001+"])];
   strips("c-mix", g, v => pct(v, 1), {left: 110, tick: d3.format(".0%"), cname: `The other ${DATA.ce_pool - 3} big brands`, rowH: 36});
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 13 iPhone share of devices, every chain */
 (() => {
@@ -566,8 +666,8 @@ try {
     {domain: [0.1, 0.8], bins: 56, ref: {v: DATA.ios_nat, label: `all US places ${pct(DATA.ios_nat)}`, anchor: "start"}, tick: d3.format(".0%")});
   legend("c-ios", [[A, col("a")], [B, col("b")], ["Chains (count per bar)", "var(--ctx)"], ["All US places", "var(--ctx-strong)", "height:2px;vertical-align:4px"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 14 neighbourhoods with the same-county test */
 (() => {
@@ -580,8 +680,8 @@ try {
   dumbbell("c-cp", rows, v => pct(v, 1), {left: 200, r: 180, domain: [-0.07, 0.78], cname: "All US residents", tick: d3.format(".0%"),
     rightHead: `Same county (${int(DATA.cp_meta.n_counties)} counties)`, rightFoot: "bold = gap survives in the county"});
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 15 share of card spending */
 (() => {
@@ -595,8 +695,8 @@ try {
   note(f.g, x(ym("2022-06")), y(mk(A)[13].y), `${A} ÷ ${B}: ${R["2022"].toFixed(2)} (2022) → ${R["2026"].toFixed(2)} (2026)\nvs café only: ${M["2022"].toFixed(2)} → ${M["2026"].toFixed(2)}`, {dx: 30, dy: -70, anchor: "start"});
   legend("c-share", [[A, col("a")], [`${B}, café + card & app`, col("b")], [`${B}, café only`, col("b"), "height:2px;vertical-align:4px"], ["Other coffee and breakfast chains", "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-} catch (e) {}
 try {
 /* 16 store traffic */
 (() => {
@@ -606,10 +706,8 @@ try {
     ctx: peers.map(k => ({pts: mk(k), label: ["McDonald's", "Chick-fil-A"].includes(k) ? k : null})), ctxOp: 0.6, tipCtx: peers.map(k => ({name: k, pts: mk(k)})), h: 320, r: 120});
   pairLegend("c-traffic", [["Other coffee and breakfast chains", "var(--ctx)"]]);
 })();
+} catch (e) { console.error(e) }
 
-
-
-} catch (e) {}
 </script>
 <footer class="site-foot">By <a href="https://suyashh77.github.io/suyashsapre_portfolio/">Suyash Sapre</a> · Data: ConsumerEdge, SafeGraph, Advan and Consumer Profiles, licensed via Dewey. Only aggregates are published: no store, card, phone or person identifiers. Panels are samples, so read levels as estimates and the gaps between chains as the finding.</footer>
 </body>
