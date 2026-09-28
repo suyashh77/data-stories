@@ -63,6 +63,8 @@ h1,h2,h3{text-wrap:balance}
 .hed,header.top h1{font:700 clamp(28px,4.2vw,38px)/1.12 var(--serif);margin:0;letter-spacing:-.01em}
 .dek,header.top .lede{font:italic 400 19px/1.45 var(--serif);color:var(--muted);margin:0;text-wrap:pretty;max-width:62ch}
 .byline{font:500 13px var(--body);color:var(--faint)}
+.stack{font:12px var(--body);color:var(--faint);margin-top:3px}
+.stack b{font-weight:600;color:var(--muted)}
 .key{display:flex;flex-wrap:wrap;gap:8px 16px;font:14px var(--body);color:var(--muted);align-items:center}
 .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 nav.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font:14px var(--body)}
