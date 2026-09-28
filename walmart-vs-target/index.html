@@ -18,7 +18,7 @@
   <h1>Walmart Wins the Weekly Run. Target Wins the Weekend.</h1>
   <p class="dek">Over half of Target's card customers also shop at Walmart. The real split isn't who walks in the door. It's which trip each store gets.</p>
   <div class="byline">Data analysis · September 2026 · Sources: ConsumerEdge, SafeGraph, Advan, Consumer Profiles</div>
-  <div class="stack">Analysis: Python, pandas, DuckDB · Visualization: D3.js · Methods: cross-shopping overlap, demographic indexing, panel comparison</div>
+  <div class="stack">Analysis: Python, pandas, DuckDB · Visualization: D3.js · Methods: cross-shopping overlap, demographic indexing, k-means clustering of brands, panel comparison</div>
 </header>
 
 <div class="hook stat-row">
@@ -78,6 +78,15 @@
   <p class="read">Share of residents with each trait in the census block groups each chain's visitors come from, weighted by visitors. Gray dots are Costco, Sam's Club, Kroger and Dollar General; the tick is all U.S. residents.</p>
   <div class="chart" id="c-cp"></div>
   <div class="src">Source: Advan visitor home block groups; Consumer Profiles (block groups with at least 50 people). These describe neighbourhoods, not individual shoppers. Income bands are modelled, with the order inferred.</div>
+</figure>
+
+<p>A clustering model grouped 1,593 brands only by who pays. Asked for two groups, it put Walmart and Target together. Asked for five, it split them. Walmart lands with Dollar General, Home Depot and Publix, brands leaning on middle-income households. Target lands with Starbucks, Chick-fil-A, Dunkin' and TJ Maxx, brands leaning on families with kids.</p>
+
+<figure>
+  <h3>Sort brands five ways by who pays, and Walmart and Target land in different groups</h3>
+  <p class="read">Five groups of card-spend brands, clustered on the age, income, wealth, home ownership and household make-up behind each brand's spending. Shown: each group's biggest brands.</p>
+  <div class="chart" id="c-tribes"></div>
+  <div class="src">Source: ConsumerEdge brand and demographic cohorts (card panel), 12 months to Aug. 9, 2026; payment processors and marketplaces excluded. <b>Label:</b> the five-group split is our choice, not the model's; its pre-set rule picked two groups. Five is less stable (refits agree at 0.84 of 1), and the groups are bins on a continuum, not distinct types.</div>
 </figure>
 
 <p>Phones point the same way. 53.9% of the devices seen at Target in the last 12 months were iPhones, the third-highest share of 28 chains, after Apple stores (63.6%) and Chick-fil-A (54.0%). At Walmart the share was 43.2%, 11th of 28. The dollar chains were lowest, at about 27% to 30%. Every retailer sits at or below the national figure of 54.8%, which also counts offices, schools and airports.</p>
@@ -231,7 +240,7 @@
 
 <section class="method">
   <h2>How this analysis was done</h2>
-  <p><b>Spending by brand and demographic group</b> is from ConsumerEdge's card-spending panel (via Dewey), May 2021 to August 2026: yearly spending, transactions and shoppers per brand; spending by modelled age, income, wealth and party; and each brand's share of spending across tracked brands. Walmart figures exclude fuel. Demographics are modelled per cardholder, and unknowns are excluded.</p>
+  <p><b>Spending by brand and demographic group</b> is from ConsumerEdge's card-spending panel (via Dewey), May 2021 to August 2026: yearly spending, transactions and shoppers per brand; spending by modelled age, income, wealth and party; and each brand's share of spending across tracked brands. Walmart figures exclude fuel. Demographics are modelled per cardholder, and unknowns are excluded. <b>Brand groups</b> are k-means clusters of 1,593 brands on 23 demographic spending shares. A rule fixed in advance chose two groups; the five-group split is shown as a labelled sensitivity check.</p>
   <p><b>Store-level card spending</b> is from SafeGraph Spend Patterns (via Dewey), January 2019 to September 2025: trips and spending per customer, customer income mix, December spending per store, card-not-present spending and same-month cross-shopping. Months after September 2025 are left out because the panel changed in October 2025.</p>
   <p><b>Visits</b> are from Advan Weekly Patterns phone-location estimates (via Dewey), using only data from January 2023 on because of a methodology change that month: visits by hour and weekday, visit length, device type, store locations and visitors' home areas. <b>Neighbourhood profiles</b> are from Consumer Profiles, matched to the census block groups Advan's visitors come from.</p>
   <p>The panels are samples, so levels are estimates; the comparisons between chains are the finding. No source shares a person, card or phone with another, so a shopper seen in one cannot be linked to a shopper in another. Timing alone cannot establish why Target's share declined.</p>
@@ -632,6 +641,28 @@ try {
   const r = lineSet("c-qtr", series, v => (v >= 0 ? "+" : "") + pct(v, 1), {y0: -0.07, y1: 0.1, tick: v => (v > 0 ? "+" : "") + d3.format(".0%")(v), tipX: d => d.getUTCFullYear() + " Q" + (Math.floor(d.getUTCMonth() / 3) + 1), dy: {Target: 8}});
   r.f.g.append("line").attr("x1", 0).attr("x2", r.f.iw).attr("y1", r.y(0)).attr("y2", r.y(0)).attr("stroke", "var(--muted)");
   note(r.f.g, r.x(px("2023Q4")), r.y(q.target["2023Q4"]), "Target −5.8% in 2023 Q4", 20, 26);
+})();
+} catch (e) { console.error(e) }
+/* 20 brand groups (k = 5 sensitivity) */
+try {
+(() => {
+  const groups = [
+    {name: "Affluent", sub: "353 brands · 23% of spend", brands: ["Costco", "Amazon", "Trader Joe's", "Whole Foods", "Nordstrom", "Safeway", "CVS", "Best Buy"]},
+    {name: "Middle-income, mid-wealth", sub: "323 brands · 34% of spend", brands: ["Walmart", "Dollar General", "Home Depot", "Publix", "Sam's Club", "Lowe's", "State Farm", "AT&T"]},
+    {name: "Families with kids", sub: "393 brands · 17% of spend", brands: ["Target", "Starbucks", "Chick-fil-A", "Dunkin'", "TJ Maxx", "H-E-B", "Instacart"]},
+    {name: "Young adults", sub: "339 brands · 17% of spend", brands: ["DoorDash", "Uber Eats", "Uber", "iTunes", "GEICO", "7-Eleven", "Costco fuel", "Chevron fuel"]},
+    {name: "Low-income renters", sub: "185 brands · 10% of spend", brands: ["T-Mobile", "Progressive", "Ross", "Dollar Tree", "TikTok Shop", "AutoZone", "Shein"]}];
+  const hl = {Walmart: "var(--wm)", Target: "var(--tg)"};
+  const root = d3.select("#c-tribes");
+  for (const g of groups) {
+    const lead = g.brands.find(b => b in hl);
+    const row = root.append("div").attr("style", `display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:10px 0 10px 10px;border-top:1px solid var(--rule);border-left:3px solid ${lead ? hl[lead] : "transparent"}`);
+    row.append("div").attr("style", "flex:0 0 200px").html(`<div style="font:600 14px var(--display)">${g.name}</div><div style="font:12px var(--body);color:var(--faint)">${g.sub}</div>`);
+    const chips = row.append("div").attr("style", "flex:1 1 300px;display:flex;flex-wrap:wrap;gap:6px");
+    for (const b of g.brands) chips.append("span").text(b).attr("style", hl[b]
+      ? `font:600 13px var(--body);padding:3px 10px;border-radius:999px;background:${hl[b]};color:#fff`
+      : "font:13px var(--body);padding:3px 10px;border-radius:999px;background:var(--sunk);border:1px solid var(--rule);color:var(--ink)");
+  }
 })();
 } catch (e) { console.error(e) }
 </script>
