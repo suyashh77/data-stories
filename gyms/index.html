@@ -133,22 +133,11 @@
   <div class="src">Source: Advan Weekly Patterns hourly visits (one sampled week per month). A visit that spans two hours counts in both, so these are shapes, not counts.</div>
 </figure>
 
-<h2>Budget and premium</h2>
-
-<p>Life Time members come more often and stay longer. Visitors to Life Time came 1.79 times a week on average, and a quarter of their visits lasted more than an hour. At Planet Fitness it was 1.45 times a week, and 13% of visits lasted more than an hour. Boutique studio visitors came about 1.1 times a week and rarely stayed past an hour, consistent with a single class.</p>
-
-<figure>
-  <h3>Life Time visitors come more often, stay longer and carry more iPhones than Planet Fitness visitors</h3>
-  <p class="read">Five measures for 32 gym chains, August 2025 to July 2026. Each row has its own scale; the tick marks all U.S. places where it applies.</p>
-  <div class="chart" id="c-strip"></div>
-  <div class="src">Source: Advan Weekly Patterns. Visits per visitor are weekly. Distance is from the visitor's home. iPhone share is of phones seen at the club, not a claim about members.</div>
-</figure>
-
-<p>The customers differ sharply. In the neighborhoods Life Time's visitors come from, 30.8% of residents are in the top three of 13 household-income bands, against 7.1% for Planet Fitness and 10.8% nationally. In ConsumerEdge's panel, households earning more than $150,000 account for 54% of Life Time's dues spending and 23% of Planet Fitness's. Planet Fitness skews young: 18-to-24-year-olds account for 10.7% of its spending, against 4.5% at Life Time.</p>
+<h2>Who pays</h2>
 
 <figure>
   <h3>Planet Fitness gets more of its spending from lower-income households than most gym brands; Life Time gets more from the rich</h3>
-  <p class="read">Share of each brand's card spending from each age and household-income group, 12 months to Aug. 9, 2026. Gray dots are 28 other gym and fitness brands; the tick is all brands in the panel.</p>
+  <p class="read">Share of each brand's card spending from each age and household-income group, 12 months to Aug. 9, 2026. Gray dots are 28 other gym and fitness brands; the highest and lowest in each row are named. The tick is all brands in the panel.</p>
   <div class="chart" id="c-demo"></div>
   <div class="src">Source: ConsumerEdge card panel. Demographics are modelled per cardholder; unknowns are excluded; cells with fewer than 30 people are dropped.</div>
 </figure>
@@ -312,7 +301,7 @@ function stripRows(id, metrics, items, opt = {}){
 
 /* Dot rows on one scale: rows {group, label, a, b, bench, others[{name,v}]} */
 function dotRows(id, rows, fmt, opt = {}){
-  const rowH = 26, nG = new Set(rows.map(r => r.group)).size;
+  const rowH = opt.outliers ? 38 : 26, nG = new Set(rows.map(r => r.group)).size;
   const f = frame(id, rows.length * rowH + nG * 22 + 34, {t: 6, r: 30, b: 26, l: 150});
   const x = d3.scaleLinear().domain(opt.domain).range([0, f.iw]);
   let yy = 0, prev = null; const pos = [];
@@ -326,6 +315,17 @@ function dotRows(id, rows, fmt, opt = {}){
     f.g.append("line").attr("x1", 0).attr("x2", f.iw).attr("y1", cy).attr("y2", cy).attr("stroke", "var(--grid)");
     f.g.selectAll(null).data(r.others).join("circle").attr("cx", o => x(o.v)).attr("cy", cy).attr("r", 3).attr("fill", "var(--ctx)").attr("fill-opacity", 0.7)
       .on("mousemove", (e, o) => showTip(f, e, `${o.name}: ${fmt(o.v)}`)).on("mouseleave", () => hideTip(f));
+    if (opt.outliers && r.others.length){
+      /* highlight and name the highest and lowest other brand in the row */
+      const ext = [d3.greatest(r.others, o => o.v), d3.least(r.others, o => o.v)];
+      ext.forEach((o, i) => {
+        f.g.append("circle").attr("cx", x(o.v)).attr("cy", cy).attr("r", 4.5).attr("fill", "var(--ctx-strong)").attr("stroke", "var(--surface)").attr("stroke-width", 1.5)
+          .on("mousemove", (e) => showTip(f, e, `<b>${o.name}</b> · ${r.label}: ${fmt(o.v)}`)).on("mouseleave", () => hideTip(f));
+        /* highest named above its dot, lowest below, so close pairs never collide */
+        f.g.append("text").attr("class", "lab halo").attr("x", x(o.v)).attr("y", i === 0 ? cy - 9 : cy + 18).attr("text-anchor", "middle")
+          .style("font-size", "10.5px").style("fill", "var(--muted)").text(`${o.name} ${fmt(o.v)}`);
+      });
+    }
     if (r.bench != null) f.g.append("line").attr("x1", x(r.bench)).attr("x2", x(r.bench)).attr("y1", cy - 9).attr("y2", cy + 9).attr("stroke", "var(--ctx-strong)").attr("stroke-width", 2);
     for (const [k, lab] of [["a", opt.aLabel], ["b", opt.bLabel]]){
       if (r[k] == null) continue;
@@ -338,7 +338,8 @@ function dotRows(id, rows, fmt, opt = {}){
       f.g.append("text").attr("class", "lab halo").attr("x", x(r.b) + (hiA ? -10 : 10)).attr("text-anchor", hiA ? "end" : "start").attr("y", cy).attr("dy", "0.35em").style("font-size", "11px").text(fmt(r.b));
     }
   }
-  legend(id, [[opt.aLabel, COL.a], [opt.bLabel, COL.b], ["Other gym and fitness brands", "var(--ctx)"], ["All brands in the panel", "var(--ctx-strong)", true]]);
+  legend(id, [[opt.aLabel, COL.a], [opt.bLabel, COL.b], ["Other gym and fitness brands", "var(--ctx)"],
+    ...(opt.outliers ? [["Highest and lowest other brand, named", "var(--ctx-strong)"]] : []), ["All brands in the panel", "var(--ctx-strong)", true]]);
 }
 
 /* ---------- 1 metros ---------- */
@@ -437,20 +438,6 @@ function dotRows(id, rows, fmt, opt = {}){
     legend: [["All gyms", COL.g], ["All U.S. places", COL.b], ["Individual gym chains", "var(--ctx)"]]});
 })();
 
-/* ---------- 10 strip rows ---------- */
-(() => {
-  const hl = {"Planet Fitness": "a", "Life Time": "b"};
-  const all = DATA.strip.find(d => d.brand === "All US places") || {};
-  const items = DATA.strip.filter(d => d.brand !== "All US places" && d.brand !== "All gyms").map(d => ({...d, name: d.brand, hl: hl[d.brand] || null}));
-  stripRows("c-strip", [
-    {label: "Visits per visitor per week", key: "visits_per_visitor_week", fmt: v => v.toFixed(2)},
-    {label: "Visits longer than an hour", key: "share_61plus", fmt: v => pct(v), bench: all.share_61plus, lo: 0},
-    {label: "Saturday share of visits", key: "sat", fmt: v => pct(v), bench: all.sat},
-    {label: "iPhone share of phones seen", key: "ios_share", fmt: v => pct(v), bench: all.ios_share},
-    {label: "Distance from home (km)", key: "km_from_home", fmt: v => v.toFixed(0), lo: 0},
-  ], items, {legend: [["Planet Fitness", COL.a], ["Life Time", COL.b], ["Other gym chains", "var(--ctx)"], ["All U.S. places", "var(--ctx-strong)"]]});
-})();
-
 /* ---------- 11 CE demographics ---------- */
 (() => {
   const T = [["AGE", "Age", ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]],
@@ -464,7 +451,7 @@ function dotRows(id, rows, fmt, opt = {}){
     const get = n => (all.find(o => o.name === n) || {}).v;
     rows.push({group: g, label: pretty(dm), a: get("Planet Fitness"), b: get("Life Time"), bench: bench.get(t + "|" + dm), others: all.filter(o => o.name !== "Planet Fitness" && o.name !== "Life Time")});
   }
-  dotRows("c-demo", rows, v => pct(v), {domain: [0, 0.7], aLabel: "Planet Fitness", bLabel: "Life Time (dues)"});
+  dotRows("c-demo", rows, v => pct(v), {domain: [0, 0.7], aLabel: "Planet Fitness", bLabel: "Life Time (dues)", outliers: true});
 })();
 </script>
 <footer class="site-foot">By <a href="https://suyashh77.github.io/suyashsapre_portfolio/">Suyash Sapre</a> · Data: ConsumerEdge, SafeGraph, Advan and Consumer Profiles, licensed via Dewey. Only aggregates are published: no store, card, phone or person identifiers. Panels are samples, so read levels as estimates and the gaps between chains as the finding.</footer>
