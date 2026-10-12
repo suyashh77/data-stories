@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where North Carolina Buys Groceries</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+/* Layout: a working paper. One serif reading column, numbered sections, numbered figures and tables, references at the end. */
+:root{
+  --bg:#fbfbf9; --surface:#ffffff; --sunk:#f0f1f2; --ink:#14181f; --muted:#4f5560; --faint:#868c96; --rule:#dcdfe3; --grid:#eceef1;
+  --urban:#e0592a; --suburban:#2a78d6; --rural:#1a9a6c; --accent:#7a3fb0; --ctx:#b4b8bf; --ctx-strong:#8a8f98;
+  --ramp0:#f6efe2; --ramp1:#f0c98f; --ramp2:#e48e52; --ramp3:#c5502f; --ramp4:#7f2329;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#121315; --surface:#1a1b1d; --sunk:#222428; --ink:#eef0f3; --muted:#c0c4cb; --faint:#8d939c; --rule:#2e3136; --grid:#25282c;
+  --urban:#f0703f; --suburban:#4b93ea; --rural:#2bb884; --accent:#b383e6; --ctx:#4d5157; --ctx-strong:#7a7e85;
+  --ramp0:#2a2722; --ramp1:#6b5530; --ramp2:#a8663a; --ramp3:#d2603b; --ramp4:#f08a6a } }
+:root[data-theme="dark"]{
+  color-scheme:dark; --bg:#121315; --surface:#1a1b1d; --sunk:#222428; --ink:#eef0f3; --muted:#c0c4cb; --faint:#8d939c; --rule:#2e3136; --grid:#25282c;
+  --urban:#f0703f; --suburban:#4b93ea; --rural:#2bb884; --accent:#b383e6; --ctx:#4d5157; --ctx-strong:#7a7e85;
+  --ramp0:#2a2722; --ramp1:#6b5530; --ramp2:#a8663a; --ramp3:#d2603b; --ramp4:#f08a6a }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);margin:0;padding-inline:16px;padding-block:0 80px;font:17px/1.62 var(--serif)}
+main{max-width:760px;margin:0 auto}
+.titleblock{padding-block:24px 10px;border-bottom:2px solid var(--ink)}
+.kind{font:600 12px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(30px,5vw,44px)/1.08 var(--serif);margin:10px 0 8px;text-wrap:balance}
+.subtitle{font:400 20px/1.4 var(--serif);color:var(--muted);margin:0 0 14px;text-wrap:pretty}
+.authors{font:14px/1.5 var(--body);color:var(--muted)}
+.authors b{color:var(--ink);font-weight:600}
+.abstract{margin:22px 0 0;padding:16px 18px;background:var(--sunk);border-radius:8px;font:15.5px/1.6 var(--body)}
+.abstract h2{font:600 12px var(--display);letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px;color:var(--muted);border:0;padding:0}
+.keypoints{margin:14px 0 0;padding-left:20px;font:15px/1.55 var(--body)}
+.keypoints li{margin:4px 0}
+.toc{font:14px/1.7 var(--body);margin:22px 0 0;columns:2;column-gap:28px}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+@media (max-width:600px){.toc{columns:1}}
+h2{font:700 24px/1.25 var(--serif);margin:48px 0 0;padding-top:12px;border-top:1px solid var(--rule);text-wrap:balance}
+h3{font:600 18px/1.3 var(--body);margin:28px 0 0;text-wrap:balance}
+p{margin:14px 0 0;text-wrap:pretty}
+.sec{font-family:var(--mono);color:var(--faint);font-weight:500;margin-right:8px}
+figure{margin:26px -60px 8px;padding:18px 18px 14px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;break-inside:avoid}
+@media (max-width:900px){figure{margin-inline:0}}
+figcaption{font:14px/1.5 var(--body);color:var(--muted)}
+figcaption b{color:var(--ink)}
+.fignum{font:600 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-right:6px}
+.chart{position:relative;margin-top:10px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.note{font:12.5px/1.5 var(--body);color:var(--faint);margin-top:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:13px var(--body);color:var(--muted);margin-top:8px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.axis text{fill:var(--muted);font:12px var(--body)} .axis path,.axis line{stroke:var(--rule)}
+.grid line{stroke:var(--grid)} .grid path{display:none}
+.lab{fill:var(--ink);font:500 12px var(--body)} .lab.muted{fill:var(--faint);font-weight:400}
+.halo{paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--surface);font:13px/1.4 var(--body);padding:6px 9px;border-radius:6px;white-space:nowrap;opacity:0;transform:translate(-50%,-112%);z-index:3}
+.tablewrap{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font:13.5px/1.45 var(--body);font-variant-numeric:tabular-nums}
+th{font-weight:600;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.02em;border-bottom:1.5px solid var(--ink);padding:6px 8px 5px}
+td{border-bottom:1px solid var(--rule);padding:6px 8px;vertical-align:top}
+td.n,th.n{text-align:right;font-family:var(--mono);font-size:13px}
+.heat td.n{font-weight:500}
+.box{margin:18px 0 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--sunk);font:15px/1.55 var(--body)}
+.box b{font-weight:600}
+.refs{font:14px/1.55 var(--body);padding-left:20px}
+.refs li{margin:6px 0}
+.u{color:var(--urban)} .s{color:var(--suburban)} .r{color:var(--rural)}
+code{font:13px var(--mono);background:var(--sunk);padding:1px 4px;border-radius:4px}
+.maps{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media (max-width:640px){.maps{grid-template-columns:1fr}}
+.maps h4{font:600 13px var(--body);margin:0}
+@media print{
+  :root{--bg:#fff;--surface:#fff}
+  body{padding:0;font-size:11pt} main{max-width:none}
+  figure{margin-inline:0;border-color:#ccc;page-break-inside:avoid}
+  h2{page-break-after:avoid} .toc{display:none}
+  a{color:inherit;text-decoration:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<nav class="note" style="padding-top:18px" aria-label="Site"><a href="../../index.html" style="color:var(--muted)">← Questions, answered with data</a> · <a href="Where_North_Carolina_Buys_Groceries.pdf" style="color:var(--muted)">Download PDF</a></nav>
+<header class="titleblock">
+  <div class="kind">Working paper · draft for discussion · October 2026</div>
+  <h1>Where North Carolina Buys Groceries</h1>
+  <p class="subtitle">A state-of-affairs report on grocery access from phone visits, card spending and census data: where people shop, how far they travel, who shops where, and how it has changed since 2017</p>
+  <div class="authors"><b>Suyash Sapre</b> · Rachunok Lab, Industrial and Systems Engineering, NC State University<br>Data: Advan Weekly Patterns and SafeGraph Spend (licensed via Dewey), ACS 2019–2023, Census TIGER 2023</div>
+</header>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p style="margin:0">Most food-access measures count the distance from a home to the nearest supermarket. We add what people actually do. We matched 2,806 of 4,452 North Carolina grocery-type stores to weekly phone-panel foot traffic (2017–2026), traced each store's visitors to their home block groups, and joined the census profile of those neighbourhoods. Four findings stand out. First, distance does not explain who uses dollar stores: in cities, the poorest neighbourhoods are as close to a supermarket as the richest (1.2 km), yet send about seven times as many grocery trips to dollar stores, and the number of dollar stores nearby is the strongest predictor. Second, rural residents mostly shop in town: 58% of their grocery visits go to stores in suburban areas, with a median trip of 9.8 km. Third, COVID moved grocery trips out of the cities (city stores −16%, rural +33% against similar stores, 2021 vs 2019), confirmed by card spending, and the shift has not reversed. Fourth, the data can measure shocks: Hurricane Helene's footprint matches FEMA's disaster counties. Coverage is strong for chains and weak for independent and specialty grocers, and the store list itself misses some rural supermarkets; we quantify both.</p>
+  <ul class="keypoints" id="keypoints"></ul>
+</section>
+
+<nav class="toc" aria-label="Contents">
+  <div><a href="#s1">1 · Why look beyond distance</a></div>
+  <div><a href="#s2">2 · Data</a></div>
+  <div><a href="#s3">3 · Methods</a></div>
+  <div><a href="#s4">4 · Coverage and bias</a></div>
+  <div><a href="#s5">5 · Where people shop</a></div>
+  <div><a href="#s6">6 · Who shops where</a></div>
+  <div><a href="#s7">7 · Supermarkets, dollar stores and the poverty gradient</a></div>
+  <div><a href="#s8">8 · How people shop</a></div>
+  <div><a href="#s9">9 · Change over time: COVID and after</a></div>
+  <div><a href="#s10">10 · Shocks: Hurricane Helene</a></div>
+  <div><a href="#s11">11 · What this means for food-access research</a></div>
+  <div><a href="#s12">12 · Next steps</a></div>
+</nav>
+
+<h2 id="s1"><span class="sec">1</span>Why look beyond distance</h2>
+<p>The standard picture of food access is a map of food deserts: low-income tracts more than a mile (urban) or ten miles (rural) from a supermarket, as in the USDA's Food Access Research Atlas. That picture counts supply. It does not say where people actually buy food, how far they really travel, or whether a nearby supermarket is used at all. Researchers have pushed on each gap. "Food swamps" describe places where less healthy outlets outnumber healthy ones, and predict obesity better than food deserts do (Cooksey-Stowers et al., 2017). "Food mirages" describe supermarkets that are physically close but economically out of reach (Breyer and Voss-Andreae, 2013). And access changes over the day, week and year, which led Widener and Shannon (2014) to ask not only <i>where</i> but <i>when</i> food deserts are.</p>
+<p>Phone-panel foot traffic lets us observe behaviour directly, at scale. This paper takes stock of what that data shows for North Carolina's grocery stores today: where people shop, how they shop, who shops where, how that has changed, and how much of the state the data actually sees. It is a state-of-affairs report, not a causal study. Where a finding is fragile, we say so.</p>
+
+<h2 id="s2"><span class="sec">2</span>Data</h2>
+<div class="tablewrap"><table id="t-data">
+  <caption class="note" style="caption-side:top;text-align:left;margin-bottom:4px"><span class="fignum">Table 1</span>Data sources</caption>
+  <thead><tr><th>Source</th><th>What it gives</th><th>Coverage</th></tr></thead>
+  <tbody>
+    <tr><td>NC grocery POI list</td><td>4,452 grocery-type stores: name, address, coordinates, Google category, chain</td><td>Statewide, 2026</td></tr>
+    <tr><td>Advan Weekly Patterns (via Dewey)</td><td>Weekly visits and visitors per place; visitor home and daytime block groups; visits by day and hour; dwell; distance from home</td><td>508 weeks, Jan 2017 to Sep 2026; method change in Jan 2023</td></tr>
+    <tr><td>SafeGraph Spend (via Dewey)</td><td>Monthly card spend, transactions, customers, ticket size, customer income bands</td><td>Jan 2019 to Sep 2025</td></tr>
+    <tr><td>ACS 2019–2023 5-year</td><td>Block-group population, race and ethnicity, income, poverty, vehicles, SNAP</td><td>7,111 NC block groups, 10.6M people</td></tr>
+    <tr><td>Census TIGER 2023</td><td>Block-group boundaries, land area, internal points</td><td>Statewide</td></tr>
+    <tr><td>Google Maps reviews</td><td>Ratings and review text per store</td><td>Collected separately; not yet joined (Section 12)</td></tr>
+  </tbody>
+</table></div>
+<p>Advan's panel is a sample of mobile devices scaled to estimates of visits. Its method changed in the week of 2 January 2023, so we never compare a value from before that week with one after it. SafeGraph Spend is a separate card-transaction panel from a different provider. Where both agree, we have two independent measurements of the same behaviour.</p>
+
+<h2 id="s3"><span class="sec">3</span>Methods</h2>
+<h3>Matching stores to foot traffic</h3>
+<p>Each POI-list store was matched to Advan places within 250 m by name similarity (sequence match, token overlap and containment), restricted to retail categories first, with stricter name rules for gas stations and restaurants, and one-to-one assignment. 2,806 stores matched: 2,610 grade A (strong name and location), 106 grade B and 90 grade C.</p>
+<h3>A fair yardstick</h3>
+<p>Raw visits rise and fall with the size of the phone panel and with the season. So each store's weekly visits are divided by the average visits per place in the same Advan category across North Carolina that week. A falling index means a store is losing ground against similar stores, not that the panel shrank.</p>
+<h3>Neighbourhoods and place types</h3>
+<p>For every block group we sum the visitors that matched stores draw from it (latest 52 weeks, Sep 2025 to Sep 2026) and compute where those visits go: by store type, by distance, and to which stores. Stores are typed as <b>full-service</b> (supermarket chains, supercenters, clubs, "Supermarket" category), <b>dollar</b>, <b>small grocery</b> (independent grocers, markets), <b>specialty</b> (ethnic, butcher, seafood, health food) or other. Place type follows the block group's density: <span class="u">city</span> 3,000 or more people per square mile of land, <span class="s">suburban</span> 500 to 3,000, <span class="r">rural</span> under 500. Stores take the class of the nearest block group.</p>
+<h3>Who shops</h3>
+<p>Shoppers are described by the census profile of their home block groups, weighted by visits, and compared with the people living within 3 km of the store and with the state. This describes neighbourhoods, not individuals.</p>
+
+<h2 id="s4"><span class="sec">4</span>Coverage and bias</h2>
+<p>Before any finding, how much of North Carolina's grocery market does the data see? The answer depends less on city versus countryside than on chain versus independent. Chains match almost perfectly everywhere; independent and specialty grocers do not, and the gap is widest in rural areas (Figure 1).</p>
+<figure>
+  <figcaption><span class="fignum">Figure 1</span><b>Chains are seen everywhere; independent and specialty grocers are not.</b> Share of POI-list stores matched to foot traffic, by store type and place type. Hover a bar.</figcaption>
+  <div class="chart" id="f1"></div>
+  <div class="legend" id="l1"></div>
+  <div class="note">All 4,024 grocery-type stores (excludes 428 "other"). Chains overall: 97.8% matched; independents: 37.2%.</div>
+</figure>
+<p>Three checks bound the damage. <b>First</b>, chain-based comparisons, including dollar stores against supermarkets, are robust: if every unmatched store had the typical visits of a matched store of its type and place, the rural dollar-store share of visits would move from 21.4% to 21.1%. <b>Second</b>, city residents are seen less often per head than rural residents (0.65 against 1.09 grocery visitors counted per resident, relative to the state median), so we report shares and rates, not counts. <b>Third</b>, the store list itself is incomplete. Of 1,306 chain-branded supermarkets, supercenters and clubs in Advan's North Carolina places, 196 (15%) have no full-service store from the list within 1 km. Some are fuel centres, offices or mislocated records, so 15% is an upper bound, but the clear gaps are rural: Ingles in Robbinsville, Cashiers and Andrews, IGA in Robbins and Bladenboro, Piggly Wiggly in Oriental and Vass, Walmart in Biscoe. In Graham County the list has no full-service store at all, although the USDA SNAP retailer data lists an Ingles in Robbinsville. Distances to the nearest supermarket in rural counties are therefore upper bounds.</p>
+<div class="box"><b>Rule of thumb for reading this paper:</b> findings about chains, dollar stores and supermarkets hold statewide. Findings about independent, ethnic and specialty grocers are lower bounds, weakest in rural areas. Rural distance-to-supermarket figures are upper bounds until the store list is reconciled.</div>
+
+<h2 id="s5"><span class="sec">5</span>Where people shop</h2>
+<p>Across the state, the people-weighted distance to the nearest full-service store is 1.5 km in cities, 2.3 km in suburbs and 7.2 km in rural areas. What people actually travel is longer: half of rural residents' grocery visits are to stores more than 9.8 km from home, and one in five is over 20 km (Table 2).</p>
+<div class="tablewrap"><table id="t2"><caption class="note" style="caption-side:top;text-align:left;margin-bottom:4px"><span class="fignum">Table 2</span>Distance to food, by where people live (people- or visit-weighted)</caption></table></div>
+<p>Rural North Carolina shops in town. Only 36% of rural residents' grocery visits go to stores in rural areas; 58% go to stores in suburban areas (Figure 2). City residents also spread out: more than half of their visits go to suburban stores.</p>
+<figure>
+  <figcaption><span class="fignum">Figure 2</span><b>Where each group's grocery visits go.</b> Rows: where people live. Columns: where the store is. Each row sums to 100%.</figcaption>
+  <div class="tablewrap"><table class="heat" id="f2"></table></div>
+  <div class="note">Visitor-weighted, latest 52 weeks, grocery-type stores matched to foot traffic.</div>
+</figure>
+<p>County averages hide the extremes but show the geography (Figure 3). The dollar-store share is highest in the northeast and the south-central Piedmont: Gates (45%), Richmond (42%) and Montgomery (41%). Distance to a supermarket is longest in the far west and the northeast (Graham, Hyde, Gates), partly because of the list gaps above.</p>
+<figure>
+  <figcaption><span class="fignum">Figure 3</span><b>Two county maps of grocery access.</b> Left: share of residents' grocery visits that go to dollar stores. Right: people-weighted straight-line distance to the nearest full-service store in the POI list. Hover a county.</figcaption>
+  <div class="maps"><div><h4>Dollar-store share of grocery visits</h4><div class="chart" id="f3a"></div></div><div><h4>Km to nearest full-service store</h4><div class="chart" id="f3b"></div></div></div>
+  <div class="legend" id="l3"></div>
+  <div class="note">Graham, Hyde and Gates show no full-service store in the list; at least Graham's is a list gap (Section 4).</div>
+</figure>
+
+<h2 id="s6"><span class="sec">6</span>Who shops where</h2>
+<p>Ranking chains by the median income of their shoppers' home neighbourhoods gives a clear ladder (Figure 4): Harris Teeter, Whole Foods and Trader Joe's at the top, near $100,000; Food Lion and Walmart in the middle, near $67,000; dollar stores and small-town chains at the bottom. The twist is in the second marker. Small-town chains such as Fresh Foods, Piggly Wiggly, IGA and Carlie C's draw shoppers from neighbourhoods 17% to 32% richer than their own: they are the hub store for a poor town and pull in the surrounding area. Harris Teeter's shoppers come from neighbourhoods 5% poorer than its own, because it sits in the richest places.</p>
+<figure>
+  <figcaption><span class="fignum">Figure 4</span><b>The grocery class ladder.</b> Dot: median income of shoppers' home neighbourhoods (visit-weighted). Ring: median income within 3 km of the chain's stores. Chains with 8+ matched stores. Hover for details.</figcaption>
+  <div class="chart" id="f4"></div>
+  <div class="note">Block-group medians from ACS 2019–2023; these describe neighbourhoods, not individual shoppers.</div>
+</figure>
+<p>By store type, shoppers look much like the people who live near the store. Dollar-store shoppers come from neighbourhoods with more SNAP households (15.3%) than supermarket shoppers' neighbourhoods (12.0%), and lower median incomes ($62,400 against $71,100).</p>
+
+<h2 id="s7"><span class="sec">7</span>Supermarkets, dollar stores and the poverty gradient</h2>
+<p>Statewide, 67,000 people live in block groups that send half or more of their grocery visits to dollar stores. Poorer neighbourhoods use dollar stores more in every kind of place (Figure 5, left). But in cities, the gradient is not about distance to a supermarket: the poorest quarter of city neighbourhoods is 1.22 km from one, the same as the least poor (1.24 km). What differs is distance to a dollar store: 1.4 km for the poorest, 3.8 km for the least poor (Figure 5, right).</p>
+<figure>
+  <figcaption><span class="fignum">Figure 5</span><b>Same distance to a supermarket, not to a dollar store.</b> Left: median dollar-store share of grocery visits by poverty quarter (quarters computed within each place type). Right: city block groups only, median km to the nearest supermarket and to the nearest dollar store.</figcaption>
+  <div class="chart" id="f5"></div>
+  <div class="legend" id="l5"></div>
+</figure>
+<p>A regression across 1,091 city block groups confirms it (Figure 6; weighted by population, standardized variables, robust errors, R² = 0.54). The number of dollar stores within 2 km is the strongest predictor of dollar-store share, followed by the share of SNAP households. Once those are included, distance to a supermarket adds only a small effect, and the shares of households without a car or below poverty add nothing significant. The ratio of dollar trips to supermarket trips, which is immune to missing independent grocers, rises from 1.3 to 9.5 per 100 across city poverty quarters.</p>
+<figure>
+  <figcaption><span class="fignum">Figure 6</span><b>What goes with a higher dollar-store share in city neighbourhoods.</b> Standardized coefficients with 95% intervals (dots), and simple correlations (rings). Right of zero: more dollar-store use.</figcaption>
+  <div class="chart" id="f6"></div>
+  <div class="note">Weighted least squares with HC1 robust errors; n = 1,091 city block groups with visit data.</div>
+</figure>
+<div class="box"><b>Interpretation.</b> In North Carolina's cities this looks less like a food desert or a mirage than a food swamp: supermarkets are as near for the poor as for the rich, but dollar stores are nearer still, and their density tracks dollar-store use. Direction is unknown: dollar chains choose sites where demand already is. An event study of dollar-store openings (Section 12) could separate the two.</div>
+
+<h2 id="s8"><span class="sec">8</span>How people shop</h2>
+<p>Visits differ by store type (Table 3). Dollar stores are quick stops: a median of 5 minutes, with 78% of visits under 5 minutes, against 8 minutes and 64% at full-service stores. Supercenters pull from furthest: half of Walmart Supercenter shoppers live more than 9.2 km away, and the median visit lasts 16 minutes, the longest of any chain.</p>
+<div class="tablewrap"><table id="t3"><caption class="note" style="caption-side:top;text-align:left;margin-bottom:4px"><span class="fignum">Table 3</span>How visits differ by store type (median store, latest 52 weeks)</caption></table></div>
+
+<h2 id="s9"><span class="sec">9</span>Change over time: COVID and after</h2>
+<p>Between 2019 and 2021, city grocery stores lost about a sixth of their footing against similar stores, while rural stores gained a third. Card spending, from a separate panel, shows the same shift (Table 4). It holds within single chains (Food Lion −19% in cities, +19% rural; Dollar General −3% and +61%) and slides smoothly with density, from +39% in the least dense tenth of store neighbourhoods to −17% in the densest (Figure 7).</p>
+<div class="tablewrap"><table id="t4"><caption class="note" style="caption-side:top;text-align:left;margin-bottom:4px"><span class="fignum">Table 4</span>Change 2021 vs 2019, median store, against similar NC stores</caption></table></div>
+<figure>
+  <figcaption><span class="fignum">Figure 7</span><b>The denser the neighbourhood, the bigger the loss.</b> Left: stores in ten density groups, median change 2021 vs 2019 (dot, phones; diamond, cards). Right: city stores' share of visits and of card spend, by year.</figcaption>
+  <div class="chart" id="f7"></div>
+  <div class="legend" id="l7"></div>
+  <div class="note">Phones: balanced panels of 2,200 stores (2017–2022) and 2,542 (2023–2026), never joined across Advan's January 2023 method change. Cards: 1,530 stores, 2019–2025.</div>
+</figure>
+<p>Two cautions. The city share was already falling before 2020, by about a point a year; COVID made the decline roughly three times faster rather than starting it. And it has not reversed: since 2023, city stores keep losing about 1% a year against similar stores, and the city share of card spend fell again in 2024 and 2025. A popular explanation, that city stores lost commuters, finds little support: the weekday share of visits barely moved (67.7% to 68.0%), and visitors to city stores came from about as far away as before (5.7 km to 5.4 km). Moving out, working from home and new stores opening where the growth is cannot be separated with this data.</p>
+
+<h2 id="s10"><span class="sec">10</span>Shocks: Hurricane Helene</h2>
+<p>Hurricane Helene reached western North Carolina on 26–27 September 2024. Comparing each week with the same dates in 2023 removes seasonality (Figure 8). Of the nine counties with the largest median drops (five or more stores), eight are in FEMA's first disaster declaration (DR-4827). Buncombe's grocery visits fell to 74% in the storm week and were back above 90% within two weeks, while Watauga stayed 24% to 43% down for a month, consistent with Appalachian State University's closure after the storm (campus foot traffic in the same data fell from about 7,200 to 2,300 visits a week). Some Asheville-area stores recorded three weeks or more with almost no visits.</p>
+<figure>
+  <figcaption><span class="fignum">Figure 8</span><b>Helene in grocery visits.</b> Weekly grocery visits as a percentage of the same dates in 2023, by area. Week 0 starts 26 September 2024. Hover a point.</figcaption>
+  <div class="chart" id="f8"></div>
+  <div class="legend" id="l8"></div>
+  <div class="note">Phone panels lose devices without power or signal, and open stores absorbed shoppers from closed ones, so these understate disruption. The series stops before Thanksgiving, which fell in different weeks in 2023 and 2024.</div>
+</figure>
+
+<h2 id="s11"><span class="sec">11</span>What this means for food-access research</h2>
+<p>Penchansky and Thomas (1981) described access as five dimensions, a framing widely used in food-environment research (Caspi et al., 2012). Table 5 maps what this data already measures onto each, and what is missing.</p>
+<div class="tablewrap"><table>
+  <caption class="note" style="caption-side:top;text-align:left;margin-bottom:4px"><span class="fignum">Table 5</span>Five dimensions of access and what the data covers</caption>
+  <thead><tr><th>Dimension</th><th>Measured now</th><th>Gap</th></tr></thead>
+  <tbody>
+    <tr><td><b>Availability</b>: are there stores?</td><td>Store counts by type; dollar-store density; stores residents actually use</td><td>Rural supermarkets missing from the list; independents under-matched</td></tr>
+    <tr><td><b>Accessibility</b>: can people get there?</td><td>Straight-line distance; observed trip distance; share of trips over 20 km; no-car households</td><td>Road and transit travel times</td></tr>
+    <tr><td><b>Affordability</b>: can people pay?</td><td>Neighbourhood income, poverty, SNAP; card ticket size; dollar-store share</td><td>Shelf prices</td></tr>
+    <tr><td><b>Acceptability</b>: do people want to shop there?</td><td>Revealed use: stores bypassed for farther ones</td><td>Reviews (collected, not yet joined)</td></tr>
+    <tr><td><b>Accommodation</b>: do hours and formats fit?</td><td>Visits by hour and day; late-night and early-morning shares; dwell</td><td>Posted opening hours</td></tr>
+  </tbody>
+</table></div>
+<p>Three lessons follow. First, behaviour and supply disagree in measurable ways: a supermarket 1 km away does not guarantee its use, so access scores should weigh where people go, not only what is near. Second, access is dynamic in the sense Widener and Shannon (2014) urged: it shifted for years after COVID and collapsed for weeks after Helene, so a single snapshot can mislead. Third, every result carries the data's coverage. Measures built on chains are solid; measures of the independent and ethnic grocers that matter most to some communities need other sources.</p>
+
+<h2 id="s12"><span class="sec">12</span>Next steps</h2>
+<ol style="font:15.5px/1.6 var(--body);padding-left:22px">
+  <li><b>Reconcile the store list</b> with the USDA SNAP Retailer Locator and Advan's NC places, then rerun distances. This mostly affects rural counties.</li>
+  <li><b>Join the reviews</b> (ratings and text) to the store profiles to measure acceptability, and test whether low-rated nearby stores are bypassed.</li>
+  <li><b>Score the five dimensions</b> per block group, with sensitivity to the coverage limits above.</li>
+  <li><b>Dollar-store openings as natural experiments:</b> a stacked event study of how nearby neighbourhoods' shopping changes when a dollar store opens.</li>
+  <li><b>Travel times</b> by road and transit in place of straight lines.</li>
+  <li><b>Public map:</b> an interactive statewide view of these measures, with Dewey cited (a working version exists locally).</li>
+</ol>
+
+<h2>References</h2>
+<ol class="refs">
+  <li>Breyer, B., and Voss-Andreae, A. (2013). Food mirages: Geographic and economic barriers to healthful food access in Portland, Oregon. <i>Health &amp; Place</i>, 24.</li>
+  <li>Caspi, C. E., Sorensen, G., Subramanian, S. V., and Kawachi, I. (2012). The local food environment and diet: A systematic review. <i>Health &amp; Place</i>, 18(5).</li>
+  <li>Cooksey-Stowers, K., Schwartz, M. B., and Brownell, K. D. (2017). Food swamps predict obesity rates better than food deserts in the United States. <i>International Journal of Environmental Research and Public Health</i>, 14(11).</li>
+  <li>Penchansky, R., and Thomas, J. W. (1981). The concept of access: Definition and relationship to consumer satisfaction. <i>Medical Care</i>, 19(2).</li>
+  <li>Widener, M. J., and Shannon, J. (2014). When are food deserts? Integrating time into research on food accessibility. <i>Health &amp; Place</i>, 30.</li>
+  <li>USDA Economic Research Service. Food Access Research Atlas.</li>
+  <li>USDA Food and Nutrition Service. SNAP Retailer Locator data.</li>
+  <li>FEMA. DR-4827-NC, North Carolina Tropical Storm Helene (2024).</li>
+  <li>Advan Weekly Patterns and SafeGraph Spend, accessed through Dewey (deweydata.io). U.S. Census Bureau, American Community Survey 2019–2023 5-year estimates; TIGER/Line 2023.</li>
+</ol>
+<p class="note">Reproduction: scripts in <code>what-are-people-buying/scripts/</code> (<code>nc_grocery_foot_traffic.py</code>, <code>nc_grocery_store_profiles.py</code>, <code>nc_grocery_neighborhoods.py</code>, <code>nc_grocery_trends.py</code>, <code>nc_access_eda.py</code>, <code>food_mirage_data.py</code>, <code>covid_groceries_data.py</code>, <code>nc_paper_data.py</code>). Figures are drawn from <code>data.json</code>, which holds aggregates only.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(async function () {
+  const D = await (await fetch("data.json")).json();
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const A = ["urban", "suburban", "rural"], AL = { urban: "City", suburban: "Suburban", rural: "Rural" }, col = (a) => css("--" + a);
+  const pct = (v, d = 0) => v == null ? "—" : (v * 100).toFixed(d) + "%", sg = (v, d = 0) => v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(d) + "%";
+  const k$ = (v) => "$" + Math.round(v / 1000) + "k", n0 = d3.format(",");
+  const charts = [];
+  const reg = (id, draw) => { const el = document.getElementById(id); const run = () => { el.innerHTML = ""; draw(el, el.clientWidth || 700); }; charts.push(run); run(); };
+  let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => charts.forEach((f) => f()), 150); }).observe(document.querySelector("main"));
+  const tipFor = (el) => { const t = document.createElement("div"); t.className = "tip"; el.appendChild(t);
+    return { show(h, x, y) { t.innerHTML = h; t.style.left = Math.max(80, Math.min(x, el.clientWidth - 80)) + "px"; t.style.top = y + "px"; t.style.opacity = 1; }, hide() { t.style.opacity = 0; } }; };
+  const legend = (id, items) => { document.getElementById(id).innerHTML = items.map(([c, l]) => `<span><span class="sw" style="background:${c}"></span>${l}</span>`).join(""); };
+  const E = D.eda, row = (name, key, val) => E[name].find((r) => r[key] === val);
+  const C = D.coverage, F = D.flags;
+
+  // key points
+  document.getElementById("keypoints").innerHTML = [
+    `${n0(C.matched)} of ${n0(C.stores)} grocery-type stores matched to foot traffic: ${pct(C.match_by_kind.chain)} of chains, ${pct(C.match_by_kind.independent)} of independents.`,
+    `${n0(F.dollar_people)} people live in neighbourhoods that shop mainly at dollar stores; ${n0(F.far_people)} live more than 16 km from a full-service store in the list.`,
+    `City neighbourhoods: 1.2 km to a supermarket at every poverty level, but 1.3 → 9.5 dollar-store trips per 100 supermarket trips from least to most poor.`,
+    `COVID: city stores ${sg(D.covid.head.urban.adv_rel)}, rural ${sg(D.covid.head.rural.adv_rel)} against similar stores (cards: ${sg(D.covid.head.urban.sg_rel)} and ${sg(D.covid.head.rural.sg_rel)}).`,
+  ].map((t) => `<li>${t}</li>`).join("");
+
+  // F1 coverage bars
+  const TYP = [["full_service", "Full-service"], ["dollar", "Dollar"], ["small_grocery", "Small grocery"], ["specialty", "Specialty"]];
+  reg("f1", (el, W) => {
+    const h = 250, m = { t: 16, r: 8, b: 32, l: 40 }, svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${h}`), tip = tipFor(el);
+    const x0 = d3.scaleBand().domain(TYP.map((t) => t[0])).range([m.l, W - m.r]).padding(.22), x1 = d3.scaleBand().domain(A).range([0, x0.bandwidth()]).padding(.08), y = d3.scaleLinear().domain([0, 1]).range([h - m.b, m.t]);
+    svg.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat(""));
+    svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%"))).call((g) => g.select(".domain").remove());
+    for (const [t, l] of TYP) { const r = row("match_rate_area_x_type", "store_type", t); for (const a of A) {
+      const v = r[a], g = svg.append("g");
+      g.append("rect").attr("x", x0(t) + x1(a)).attr("width", x1.bandwidth()).attr("y", y(v)).attr("height", y(0) - y(v)).attr("rx", 3).attr("fill", col(a))
+        .on("mousemove", (e) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${l}</b> · ${AL[a]}: ${pct(v)} matched`, mx, my); }).on("mouseleave", tip.hide);
+      g.append("text").attr("x", x0(t) + x1(a) + x1.bandwidth() / 2).attr("y", y(v) - 4).attr("text-anchor", "middle").attr("class", "lab").style("font-size", W < 520 ? "9.5px" : "11px").text(pct(v));
+    } }
+    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b + 4})`).call(d3.axisBottom(x0).tickFormat((k) => TYP.find((t) => t[0] === k)[1]).tickSize(0)).call((g) => g.select(".domain").remove());
+  });
+  legend("l1", A.map((a) => [col(a), AL[a]]));
+
+  // Table 2
+  const acc = (a) => row("access_by_area", "area", a), trip = (a) => row("trip_distance_by_home_area", "home_area", a);
+  document.getElementById("t2").insertAdjacentHTML("beforeend", `<thead><tr><th>Where people live</th><th class="n">Km to nearest full-service store</th><th class="n">Typical grocery trip (km)</th><th class="n">Trips over 20 km</th><th class="n">Dollar-store share</th><th class="n">No-car households</th></tr></thead><tbody>` +
+    A.map((a) => `<tr><td><span class="${a[0]}">●</span> ${AL[a]}</td><td class="n">${acc(a).km_nearest_full_service.toFixed(1)}</td><td class="n">${trip(a).median_km.toFixed(1)}</td><td class="n">${pct(trip(a).share_over_20km)}</td><td class="n">${pct(acc(a).share_dollar, 1)}</td><td class="n">${pct(acc(a).pct_hh_no_vehicle, 1)}</td></tr>`).join("") + "</tbody>");
+
+  // F2 heat table
+  { const ramp = d3.scaleLinear().domain([0, .75]).range([css("--surface"), css("--suburban")]);
+    const rows = A.map((a) => row("resident_area_to_store_area", "home_area", a));
+    document.getElementById("f2").innerHTML = `<thead><tr><th>People living in…</th>${A.map((a) => `<th class="n">…shop at ${AL[a].toLowerCase()} stores</th>`).join("")}</tr></thead><tbody>` +
+      rows.map((r, i) => `<tr><td><span class="${A[i][0]}">●</span> ${AL[A[i]]} areas</td>${A.map((a) => `<td class="n" style="background:${ramp(r[a])};color:${r[a] > .45 ? "#fff" : "inherit"}">${pct(r[a])}</td>`).join("")}</tr>`).join("") + "</tbody>"; }
+
+  // F3 maps
+  const mapDraw = (id, key, stops, fmt) => reg(id, (el, W) => {
+    const h = Math.round(W * .52), svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${h}`), tip = tipFor(el);
+    const proj = d3.geoMercator().fitSize([W, h], D.counties_geo), path = d3.geoPath(proj);
+    const ramp = d3.scaleLinear().domain(stops).range(["--ramp0", "--ramp1", "--ramp2", "--ramp3", "--ramp4"].map(css)).clamp(true);
+    svg.selectAll("path").data(D.counties_geo.features).join("path").attr("d", path).attr("stroke", css("--surface")).attr("stroke-width", .6)
+      .attr("fill", (f) => { const c = D.counties[f.properties.c]; return c && c[key] != null ? ramp(c[key]) : css("--sunk"); })
+      .on("mousemove", (e, f) => { const c = D.counties[f.properties.c], [mx, my] = d3.pointer(e, el); if (c) tip.show(`<b>${c.name}</b> · ${n0(c.people)} people<br>Dollar share ${pct(c.dollar)} · ${c.km_full.toFixed(1)} km to full-service`, mx, my); })
+      .on("mouseleave", tip.hide);
+  });
+  mapDraw("f3a", "dollar", [0, .08, .16, .26, .4], pct); mapDraw("f3b", "km_full", [0, 2, 5, 10, 20], (v) => v.toFixed(1));
+  document.getElementById("l3").innerHTML = `<span>Lighter → darker = higher. Dollar share 0% to 40%+ · distance 0 to 20+ km</span><span style="display:inline-block;width:150px;height:10px;border-radius:3px;background:linear-gradient(90deg,${["--ramp0", "--ramp1", "--ramp2", "--ramp3", "--ramp4"].map(css).join(",")})"></span>`;
+
+  // F4 ladder
+  reg("f4", (el, W) => {
+    const L = E.chain_ladder.slice().sort((a, b) => b.visitor_income - a.visitor_income).map((r) => ({ ...r, name: r.chain === "(independent)" ? "Independent grocers" : r.chain.replace(/\b\w/g, (c) => c.toUpperCase()).replace("Carlie C S", "Carlie C's").replace("Trader Joe S", "Trader Joe's").replace("Iga", "IGA") }));
+    const rh = 22, m = { t: 22, r: 70, b: 26, l: W < 520 ? 130 : 180 }, h = m.t + m.b + rh * L.length, svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${h}`), tip = tipFor(el);
+    const x = d3.scaleLinear().domain([30000, 120000]).range([m.l, W - m.r]), y = d3.scaleBand().domain(L.map((r) => r.name)).range([m.t, h - m.b]).padding(.3);
+    svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5).tickSize(-(h - m.t - m.b)).tickFormat(""));
+    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5).tickFormat(k$)).call((g) => g.select(".domain").remove());
+    const g = svg.selectAll("g.r").data(L).join("g").attr("transform", (r) => `translate(0,${y(r.name) + y.bandwidth() / 2})`);
+    g.append("text").attr("x", m.l - 8).attr("dy", 4).attr("text-anchor", "end").attr("class", "lab").text((r) => r.name);
+    g.append("line").attr("x1", (r) => x(r.visitor_income)).attr("x2", (r) => x(r.nearby_income)).attr("stroke", css("--ctx")).attr("stroke-width", 2);
+    g.append("circle").attr("cx", (r) => x(r.nearby_income)).attr("r", 5).attr("fill", "none").attr("stroke", css("--ink")).attr("stroke-width", 1.3);
+    g.append("circle").attr("cx", (r) => x(r.visitor_income)).attr("r", 5.5).attr("fill", (r) => r.income_gap > .1 ? css("--accent") : css("--ink"));
+    g.append("text").attr("x", (r) => x(Math.max(r.visitor_income, r.nearby_income)) + 9).attr("dy", 4).attr("class", "lab muted").text((r) => `${k$(r.visitor_income)} · ${sg(r.income_gap * 100)}`);
+    g.append("rect").attr("x", 0).attr("y", -y.bandwidth()).attr("width", W).attr("height", y.bandwidth() * 2).attr("fill", "transparent")
+      .on("mousemove", (e, r) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${r.name}</b> · ${r.stores} stores<br>Shoppers' neighbourhoods ${k$(r.visitor_income)} · near the stores ${k$(r.nearby_income)}<br>Half of shoppers within ${r.km_half.toFixed(1)} km · SNAP ${pct(r.visitor_snap, 1)}`, mx, my); }).on("mouseleave", tip.hide);
+    svg.append("text").attr("x", W - m.r + 64).attr("y", 12).attr("text-anchor", "end").attr("class", "lab muted").text("shopper income · gap vs nearby");
+  });
+
+  // F5 poverty gradient
+  reg("f5", (el, W) => {
+    const two = W >= 600, cw = two ? (W - 30) / 2 : W, h = 260, svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${two ? h : h * 2 + 20}`), tip = tipFor(el);
+    const Q = ["Q1 least poor", "Q2", "Q3", "Q4 poorest"], QL = ["Least poor", "2nd", "3rd", "Poorest"];
+    const panel = (ox, oy, title, series, fmt, yMax) => {
+      const m = { t: 30, r: 86, b: 28, l: 44 }, g = svg.append("g").attr("transform", `translate(${ox},${oy})`);
+      g.append("text").attr("y", 12).attr("class", "lab").style("font-weight", 600).text(title);
+      const x = d3.scalePoint().domain(QL).range([m.l, cw - m.r]).padding(.3), y = d3.scaleLinear().domain([0, yMax]).nice().range([h - m.b, m.t]);
+      g.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(cw - m.l - m.r)).tickFormat(""));
+      g.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(fmt)).call((gg) => gg.select(".domain").remove());
+      g.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).tickSizeOuter(0));
+      let ends = [];
+      for (const s of series) {
+        g.append("path").datum(s.v).attr("fill", "none").attr("stroke", s.c).attr("stroke-width", 2.2).attr("stroke-dasharray", s.dash || null).attr("d", d3.line().x((d, i) => x(QL[i])).y((d) => y(d)));
+        g.selectAll(null).data(s.v).join("circle").attr("cx", (d, i) => x(QL[i])).attr("cy", (d) => y(d)).attr("r", 4).attr("fill", s.c)
+          .on("mousemove", (e, d) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${s.l}</b>: ${fmt(d)}`, mx, my); }).on("mouseleave", tip.hide);
+        ends.push({ y: y(s.v[3]), l: `${s.l} ${fmt(s.v[3])}`, c: s.c });
+      }
+      ends.sort((p, q) => p.y - q.y); for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+      for (const e of ends) g.append("text").attr("x", x(QL[3]) + 8).attr("y", e.y + 4).attr("class", "lab halo").style("fill", e.c).text(e.l);
+    };
+    const ds = E.dollar_share_by_poverty_within_area;
+    panel(0, 0, "Dollar-store share of grocery visits", A.map((a) => ({ l: AL[a], c: col(a), v: Q.map((q) => ds.find((r) => r.pov_q === q)[a]) })), (v) => (v * 100).toFixed(1) + "%", .18);
+    const bq = D.mirage.by_q.filter((r) => r.area === "urban");
+    panel(two ? cw + 30 : 0, two ? 0 : h + 20, "City block groups: km to nearest…", [{ l: "supermarket", c: css("--ink"), v: bq.map((r) => r.km_full) }, { l: "dollar store", c: css("--accent"), v: bq.map((r) => r.km_dollar), dash: "5 3" }], (v) => v.toFixed(1), 4);
+  });
+  legend("l5", [...A.map((a) => [col(a), AL[a]]), [css("--ink"), "Supermarket (right)"], [css("--accent"), "Dollar store (right)"]]);
+
+  // F6 regression
+  reg("f6", (el, W) => {
+    const R = D.mirage.reg.slice().sort((a, b) => b.beta - a.beta), rh = 34, m = { t: 14, r: 20, b: 34, l: W < 520 ? 160 : 230 }, h = m.t + m.b + rh * R.length;
+    const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${h}`), tip = tipFor(el);
+    const x = d3.scaleLinear().domain([-.6, .7]).range([m.l, W - m.r]), y = d3.scaleBand().domain(R.map((r) => r.var)).range([m.t, h - m.b]).padding(.4);
+    svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(6).tickSize(-(h - m.t - m.b)).tickFormat(""));
+    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(6)).call((g) => g.select(".domain").remove());
+    svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", m.t).attr("y2", h - m.b).attr("stroke", css("--ink"));
+    const g = svg.selectAll("g.r").data(R).join("g").attr("transform", (r) => `translate(0,${y(r.var) + y.bandwidth() / 2})`);
+    g.append("text").attr("x", m.l - 8).attr("dy", 4).attr("text-anchor", "end").attr("class", "lab").text((r) => r.var);
+    g.append("line").attr("x1", (r) => x(r.lo)).attr("x2", (r) => x(r.hi)).attr("stroke", (r) => r.p < .05 ? css("--accent") : css("--ctx")).attr("stroke-width", 3).attr("stroke-linecap", "round");
+    g.append("circle").attr("cx", (r) => x(r.corr)).attr("r", 5).attr("fill", "none").attr("stroke", css("--ctx-strong")).attr("stroke-width", 1.4);
+    g.append("circle").attr("cx", (r) => x(r.beta)).attr("r", 6).attr("fill", (r) => r.p < .05 ? css("--accent") : css("--ctx-strong"));
+    g.append("rect").attr("x", 0).attr("y", -rh / 2).attr("width", W).attr("height", rh).attr("fill", "transparent")
+      .on("mousemove", (e, r) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${r.var}</b><br>Coefficient ${r.beta.toFixed(2)} (95%: ${r.lo.toFixed(2)} to ${r.hi.toFixed(2)}), p = ${r.p < .001 ? "<0.001" : r.p.toFixed(3)}<br>Simple correlation ${r.corr.toFixed(2)}`, mx, my); }).on("mouseleave", tip.hide);
+    svg.append("text").attr("x", W - m.r).attr("y", h - 4).attr("text-anchor", "end").attr("class", "lab muted").text("standardized coefficient →");
+  });
+
+  // Table 3
+  { const T = E.timing_by_type, lab = { full_service: "Full-service", dollar: "Dollar", small_grocery: "Small grocery", specialty: "Specialty" };
+    document.getElementById("t3").insertAdjacentHTML("beforeend", `<thead><tr><th>Store type</th><th class="n">Median minutes</th><th class="n">Visits under 5 min</th><th class="n">6–9 am</th><th class="n">5–8 pm</th><th class="n">9 pm–6 am</th><th class="n">Weekend</th><th class="n">Half of shoppers within</th></tr></thead><tbody>` +
+      T.filter((r) => lab[r.store_type]).map((r) => `<tr><td>${lab[r.store_type]}</td><td class="n">${r.median_dwell_min.toFixed(0)}</td><td class="n">${pct(r.share_visits_under_5min)}</td><td class="n">${pct(r.share_early_6_9am, 1)}</td><td class="n">${pct(r.share_evening_5_8pm, 1)}</td><td class="n">${pct(r.share_late_9pm_6am, 1)}</td><td class="n">${pct(r.weekend_share)}</td><td class="n">${r.home_km_p50.toFixed(1)} km</td></tr>`).join("") + "</tbody>"); }
+
+  // Table 4
+  { const H = D.covid.head; document.getElementById("t4").insertAdjacentHTML("beforeend", `<thead><tr><th>Stores in…</th><th class="n">Visits (phones)</th><th class="n">Card spend, relative</th><th class="n">Card spend, raw</th><th class="n">Trend since 2023, per year</th><th class="n">Stores</th></tr></thead><tbody>` +
+      A.map((a) => `<tr><td><span class="${a[0]}">●</span> ${AL[a]} areas</td><td class="n">${sg(H[a].adv_rel)}</td><td class="n">${sg(H[a].sg_rel)}</td><td class="n">${sg(H[a].sg_raw)}</td><td class="n">${sg(H[a].trend, 1)}</td><td class="n">${n0(H[a].n)}</td></tr>`).join("") + "</tbody>"); }
+
+  // F7 gradient + share
+  reg("f7", (el, W) => {
+    const two = W >= 640, cw = two ? (W - 30) * .56 : W, cw2 = two ? (W - 30) * .44 : W, h = 270, svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${two ? h : h * 2 + 20}`), tip = tipFor(el);
+    const G = D.covid.grad, m = { t: 24, r: 8, b: 40, l: 44 }, g = svg.append("g");
+    const x = d3.scaleBand().domain(G.map((d) => d.dec)).range([m.l, cw - m.r]).padding(.3), y = d3.scaleLinear().domain([-30, 60]).range([h - m.b, m.t]);
+    g.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(6).tickSize(-(cw - m.l - m.r)).tickFormat(""));
+    g.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(6).tickFormat((d) => (d > 0 ? "+" : "") + d + "%")).call((gg) => gg.select(".domain").remove());
+    g.append("line").attr("x1", m.l).attr("x2", cw - m.r).attr("y1", y(0)).attr("y2", y(0)).attr("stroke", css("--ink"));
+    const area = (d) => d.density_med >= 3000 ? "urban" : d.density_med >= 500 ? "suburban" : "rural";
+    const gg = g.selectAll("g.d").data(G).join("g").attr("transform", (d) => `translate(${x(d.dec) + x.bandwidth() / 2},0)`);
+    gg.append("circle").attr("cy", (d) => y(d.adv_med)).attr("r", 6).attr("fill", (d) => col(area(d)));
+    gg.append("path").attr("d", d3.symbol(d3.symbolDiamond, 46)).attr("transform", (d) => `translate(0,${y(d.sg_med)})`).attr("fill", "none").attr("stroke", css("--ink"));
+    gg.append("rect").attr("x", -x.bandwidth() / 2).attr("width", x.bandwidth()).attr("y", m.t).attr("height", h - m.t - m.b).attr("fill", "transparent")
+      .on("mousemove", (e, d) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${n0(Math.round(d.density_lo))}–${n0(Math.round(d.density_hi))} people/sq mi</b><br>Phones ${sg(d.adv_med, 1)} · cards ${sg(d.sg_med, 1)} · ${d.n} stores`, mx, my); }).on("mouseleave", tip.hide);
+    g.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).tickFormat((k) => k % 3 === 0 ? d3.format(".2~s")(G[k].density_med) : "").tickSize(0)).call((q) => q.select(".domain").remove());
+    g.append("text").attr("x", (m.l + cw) / 2).attr("y", h - 8).attr("text-anchor", "middle").attr("class", "lab muted").text("store neighbourhood density (people/sq mi) → denser");
+    g.append("text").attr("x", m.l).attr("y", 12).attr("class", "lab").style("font-weight", 600).text("Change 2021 vs 2019, by density tenth");
+    // share panel
+    const ox = two ? cw + 30 : 0, oy = two ? 0 : h + 20, g2 = svg.append("g").attr("transform", `translate(${ox},${oy})`), m2 = { t: 24, r: 60, b: 40, l: 40 };
+    const ph = D.covid.years.filter((r) => r.area === "urban").map((r) => [+r.year, r.share, r.era]);
+    const cs = D.covid.spend_years.urban, cy = d3.groups(cs.months.map((mm, i) => [+mm.slice(0, 4), cs.share[i]]), (d) => d[0]).map(([yy, v]) => [yy, d3.mean(v, (d) => d[1])]);
+    const x2 = d3.scaleLinear().domain([2017, 2026]).range([m2.l, cw2 - m2.r]), y2 = d3.scaleLinear().domain([13, 21]).range([h - m2.b, m2.t]);
+    g2.append("g").attr("class", "grid").attr("transform", `translate(${m2.l},0)`).call(d3.axisLeft(y2).ticks(4).tickSize(-(cw2 - m2.l - m2.r)).tickFormat(""));
+    g2.append("g").attr("class", "axis").attr("transform", `translate(${m2.l},0)`).call(d3.axisLeft(y2).ticks(4).tickFormat((d) => d + "%")).call((q) => q.select(".domain").remove());
+    g2.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m2.b})`).call(d3.axisBottom(x2).ticks(5).tickFormat(d3.format("d")).tickSizeOuter(0));
+    g2.append("text").attr("x", m2.l).attr("y", 12).attr("class", "lab").style("font-weight", 600).text("City stores' share");
+    for (const era of [1, 2]) { const s = ph.filter((d) => d[2] === era); g2.append("path").datum(s).attr("fill", "none").attr("stroke", col("urban")).attr("stroke-width", 2.2).attr("d", d3.line().x((d) => x2(d[0])).y((d) => y2(d[1]))); }
+    g2.append("path").datum(cy).attr("fill", "none").attr("stroke", css("--ink")).attr("stroke-width", 1.6).attr("stroke-dasharray", "5 4").attr("d", d3.line().x((d) => x2(d[0])).y((d) => y2(d[1])));
+    g2.selectAll(null).data(ph).join("circle").attr("cx", (d) => x2(d[0])).attr("cy", (d) => y2(d[1])).attr("r", 3.5).attr("fill", col("urban"))
+      .on("mousemove", (e, d) => { const [mx, my] = d3.pointer(e, el); tip.show(`${d[0]}: ${d[1].toFixed(1)}% of visits`, mx, my); }).on("mouseleave", tip.hide);
+    g2.append("text").attr("x", x2(2026) + 6).attr("y", y2(ph[ph.length - 1][1]) + 4).attr("class", "lab halo").style("fill", col("urban")).text("visits");
+    g2.append("text").attr("x", x2(2025) + 6).attr("y", y2(cy[cy.length - 1][1]) + 16).attr("class", "lab halo").text("spend");
+  });
+  legend("l7", [[col("rural"), "Rural"], [col("suburban"), "Suburban"], [col("urban"), "City"], [css("--ink"), "Cards (diamond / dashed)"]]);
+
+  // F8 Helene
+  reg("f8", (el, W) => {
+    const groups = [["Buncombe", col("urban")], ["Watauga", css("--accent")], ["Henderson", col("suburban")], ["Other first-declaration counties", css("--ctx-strong")], ["Counties not declared", css("--ctx")]];
+    const h = 300, m = { t: 14, r: W < 520 ? 70 : 190, b: 32, l: 44 }, svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${h}`), tip = tipFor(el);
+    const x = d3.scaleLinear().domain([-4, 7]).range([m.l, W - m.r]), y = d3.scaleLinear().domain([50, 115]).range([h - m.b, m.t]);
+    svg.append("rect").attr("x", x(0)).attr("width", x(1) - x(0)).attr("y", m.t).attr("height", h - m.t - m.b).attr("fill", css("--sunk"));
+    svg.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(6).tickSize(-(W - m.l - m.r)).tickFormat(""));
+    svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(6).tickFormat((d) => d + "%")).call((g) => g.select(".domain").remove());
+    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(11).tickFormat((d) => d === 0 ? "storm" : (d > 0 ? "+" : "") + d)).call((g) => g.select(".domain").remove());
+    svg.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(100)).attr("y2", y(100)).attr("stroke", css("--ink")).attr("stroke-dasharray", "3 3");
+    let ends = [];
+    for (const [gname, c] of groups) { const s = (D.helene[gname] || []).filter((d) => d[0] >= -4 && d[0] <= 7); if (!s.length) continue;
+      svg.append("path").datum(s).attr("fill", "none").attr("stroke", c).attr("stroke-width", gname.length < 12 ? 2.4 : 1.6).attr("d", d3.line().x((d) => x(d[0])).y((d) => y(d[1])));
+      svg.selectAll(null).data(s).join("circle").attr("cx", (d) => x(d[0])).attr("cy", (d) => y(d[1])).attr("r", 3).attr("fill", c)
+        .on("mousemove", (e, d) => { const [mx, my] = d3.pointer(e, el); tip.show(`<b>${gname}</b>, week ${d[0] > 0 ? "+" : ""}${d[0]}: ${d[1].toFixed(0)}% of 2023`, mx, my); }).on("mouseleave", tip.hide);
+      const l = s[s.length - 1]; ends.push({ y: y(l[1]), l: W < 520 ? gname.split(" ")[0] : gname, c }); }
+    ends.sort((p, q) => p.y - q.y); for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 13) ends[i].y = ends[i - 1].y + 13;
+    for (const e of ends) svg.append("text").attr("x", x(7) + 6).attr("y", e.y + 4).attr("class", "lab halo").style("fill", e.c).style("font-size", "11px").text(e.l);
+  });
+  legend("l8", [[col("urban"), "Buncombe (Asheville)"], [css("--accent"), "Watauga (Boone)"], [col("suburban"), "Henderson"], [css("--ctx-strong"), "Other first-declaration counties"], [css("--ctx"), "Counties not declared"]]);
+})();
+</script>
+</body>
+</html>
