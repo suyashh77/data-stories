@@ -7,5 +7,6 @@ Data-driven articles about how Americans shop, by [Suyash Sapre](https://suyashh
 - [Dunkin' peaks at 9 a.m. Starbucks peaks at noon. What does that say about their customers?](dunkin-vs-starbucks/index.html): A cheaper weekday routine and a weekend treat on different clocks, and a payment system that makes card counts an incomplete picture of the coffee run.
 - [Where America Works Out](gyms/index.html): The American gym landscape by card and phone data: where gyms cluster, which brands are opening and closing, what members pay, and when the rush actually happens.
 - [The gas-station run keeps its own clock](gas-station-run/index.html): A clustering study of convenience-store receipts. Sorted only by what sold, the day splits into three runs, and nearly a third of baskets are fuel alone.
+- [Groceries left the city, and didn't come back](covid-groceries/index.html): From 2019 to 2021, city grocery stores in North Carolina lost about a sixth of their footing against similar stores while rural stores gained a third. Phone visits and card spending agree, and the gap has not closed.
 
 `assets/site.css` is the one stylesheet every page uses. Pages are generated from a separate analysis repository. Only aggregates are published: no store, card, phone or person identifiers.
